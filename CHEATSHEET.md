@@ -69,6 +69,7 @@ Leader key is set to `<Space>`.
 | `<leader>lT` | Normal | Run tests in active file via `uv run pytest %` in split.        |
 | `<leader>li` | Normal | Launch interactive Python REPL via `uv run python` in split.    |
 | `<leader>lm` | Normal | Insert PEP 723 inline script metadata header block.             |
+| `<leader>ls` | Normal | Sync script dependencies via `uv sync --script %` & reload LSP. |
 
 ### Go (`FileType go`)
 

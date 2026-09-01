@@ -26,7 +26,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Integrated `mini.misc` for native window zooming without extra external plugins.
 - Configured `mini.trailspace` to unhighlight on cursor movement for subtle whitespace feedback.
 - Added dynamic `+language` group architecture (`<leader>l`) for context-aware, filetype-specific actions with zero menu clutter in other languages.
-- Added buffer-local Python actions under `<leader>l`: run script (`<leader>lr` via `uv run %`), run test suite (`<leader>lt` via `uv run pytest`), run active file tests (`<leader>lT`), interactive REPL (`<leader>li` via `uv run python`), and insert PEP 723 inline script metadata block header (`<leader>lm`).
+- Added buffer-local Python actions under `<leader>l`: run script (`<leader>lr` via `uv run %`), run test suite (`<leader>lt` via `uv run pytest`), run active file tests (`<leader>lT`), interactive REPL (`<leader>li` via `uv run python`), insert PEP 723 inline script metadata block header (`<leader>lm`), and sync dependencies (`<leader>ls` via `uv sync --script %`).
+- Added automatic PEP 723 and `uv` virtual environment resolution to `basedpyright` LSP configuration (`lua/lsp.lua`), dynamically detecting and linking script-specific cached environments to eliminate unresolved import diagnostics without manual `.venv` creation.
 - Added buffer-local Go actions under `<leader>l`: run package (`<leader>lr` via `go run .`), run all tests (`<leader>lt` via `go test ./...`), run package tests (`<leader>lT`), module tidy (`<leader>lm`), generate (`<leader>lg`), and vet (`<leader>lv`).
 - Added buffer-local Markdown actions under `<leader>l`: task checkbox toggling (`<leader>lx`), preview toggle (`<leader>lp`), bullet lists (`<leader>lb`), and heading level setters (`<leader>l1`–`<leader>l6`).
 - Updated `mini.clue` leader descriptions for `+code`, `+git`, `+language/local`, and `+split/substitute`.

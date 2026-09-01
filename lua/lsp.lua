@@ -53,6 +53,72 @@ vim.lsp.config("ruff", {
     end,
 })
 
+-- Resolve python interpreter dynamically for PEP 723 / uv scripts or local .venv
+local function resolve_python_path(root_dir, bufname)
+    -- 1. Check for PEP 723 inline script metadata / uv shebang in active buffer
+    if bufname and bufname ~= "" and vim.fn.filereadable(bufname) == 1 then
+        local first_lines = vim.api.nvim_buf_get_lines(0, 0, 25, false)
+        local is_script = false
+        for _, line in ipairs(first_lines) do
+            if line:match("^# /// script") or line:match("uv run %-%-script") then
+                is_script = true
+                break
+            end
+        end
+
+        if is_script then
+            -- Sync script dependencies if needed and retrieve environment interpreter
+            vim.fn.system({ "uv", "sync", "--script", bufname })
+            local script_py = vim.fn.systemlist({ "uv", "python", "find", "--script", bufname })[1]
+            if vim.v.shell_error == 0 and script_py and script_py ~= "" and vim.fn.filereadable(script_py) == 1 then
+                return script_py
+            end
+        end
+    end
+
+    -- 2. Check for local or parent .venv directory
+    local venv = vim.fs.find(".venv", { path = root_dir or vim.fn.getcwd(), upward = true })[1]
+    if venv and vim.fn.isdirectory(venv) == 1 then
+        local venv_py = venv .. "/bin/python"
+        if vim.fn.filereadable(venv_py) == 1 then
+            return venv_py
+        end
+    end
+
+    -- 3. Check VIRTUAL_ENV environment variable
+    if vim.env.VIRTUAL_ENV then
+        local env_py = vim.env.VIRTUAL_ENV .. "/bin/python"
+        if vim.fn.filereadable(env_py) == 1 then
+            return env_py
+        end
+    end
+
+    return nil
+end
+
+vim.lsp.config("basedpyright", {
+    before_init = function(params, config)
+        local bufname = vim.api.nvim_buf_get_name(0)
+        local root_dir = params.rootPath or params.rootUri
+        local py_path = resolve_python_path(root_dir, bufname)
+        if py_path then
+            config.settings = config.settings or {}
+            config.settings.python = config.settings.python or {}
+            config.settings.python.pythonPath = py_path
+        end
+    end,
+    settings = {
+        basedpyright = {
+            analysis = {
+                autoSearchPaths = true,
+                useLibraryCodeForTypes = true,
+                diagnosticMode = "openFilesOnly",
+                typeCheckingMode = "standard",
+            },
+        },
+    },
+})
+
 -- YAML (SchemaStore): automatic validation for GitHub Actions, K8s, Compose, etc.
 vim.lsp.config("yamlls", {
     settings = {

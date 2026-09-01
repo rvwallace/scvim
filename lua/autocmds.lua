@@ -110,6 +110,20 @@ autocmd("FileType", {
             vim.api.nvim_buf_set_lines(buf, start_idx, start_idx, false, pep723)
             vim.notify("Inserted PEP 723 inline script metadata header")
         end, "Insert PEP 723 script metadata header")
+
+        -- Sync script dependencies and refresh LSP
+        map("n", "<leader>ls", function()
+            local file = vim.fn.expand("%")
+            vim.cmd("silent! write")
+            vim.notify("Syncing script dependencies with uv...", vim.log.levels.INFO)
+            local out = vim.fn.system({ "uv", "sync", "--script", file })
+            if vim.v.shell_error == 0 then
+                vim.notify("uv sync complete! Reloading LSP...", vim.log.levels.INFO)
+                vim.cmd("lsp restart")
+            else
+                vim.notify("uv sync failed:\n" .. out, vim.log.levels.ERROR)
+            end
+        end, "Sync script dependencies (uv sync --script %)")
     end,
 })
 
