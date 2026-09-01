@@ -23,6 +23,7 @@ vim.opt.laststatus = 3         -- Global statusline across all splits
 vim.opt.ignorecase = true      -- Case-insensitive search by default
 vim.opt.smartcase = true       -- Case-sensitive if query contains capital letters
 vim.opt.inccommand = "split"   -- Show live substitution preview in a split window
+vim.opt.diffopt:append("linematch:60") -- Smarter diff display aligning modified lines
 
 -- ── Backup, Swap & Persistent Undo ────────────────────────────────────────
 vim.opt.swapfile = false       -- Disable swapfiles

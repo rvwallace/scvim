@@ -3,12 +3,32 @@ require("mason").setup()
 
 -- ── 2. LSP Keymaps & Diagnostic Settings ──────────────────────────────────
 vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Go to definition" })
+vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover documentation" })
+vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Rename symbol" })
+vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
 
 vim.diagnostic.config({
-    virtual_text = true,     -- Show inline diagnostic text
+    virtual_text = { prefix = "●", spacing = 4 },
     underline = true,        -- Underline problematic code
-    update_in_insert = true, -- Update diagnostics while typing
+    update_in_insert = false, -- Avoid recalculating while typing
+    severity_sort = true,
+    float = {
+        border = "rounded",
+        source = "if_many",
+        header = "",
+        prefix = "",
+    },
 })
+
+-- Rounded borders for all LSP floating previews (hover, signature help, etc.)
+do
+    local orig = vim.lsp.util.open_floating_preview
+    function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+        opts = opts or {}
+        opts.border = opts.border or "rounded"
+        return orig(contents, syntax, opts, ...)
+    end
+end
 
 -- ── 3. Client Capabilities (mini.completion integration) ──────────────────
 local capabilities = vim.lsp.protocol.make_client_capabilities()

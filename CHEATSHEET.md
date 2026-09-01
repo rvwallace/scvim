@@ -48,6 +48,7 @@ Leader key is set to `<Space>`.
 
 | Keymap       | Mode   | Description                                       |
 | :----------- | :----- | :------------------------------------------------ |
+| `<leader>tf` | Normal | Toggle floating terminal scratchpad.              |
 | `<leader>tt` | Normal | Open bottom terminal split (12 lines high).       |
 | `<leader>tv` | Normal | Open vertical terminal split on the right.        |
 | `<leader>tc` | Normal | Toggle CSV and TSV table view (`:CsvViewToggle`). |
@@ -82,6 +83,7 @@ Leader key is set to `<Space>`.
 
 | Keymap             | Mode   | Description                                                   |
 | :----------------- | :----- | :------------------------------------------------------------ |
+| `j` / `k`          | Normal | Wrap-aware vertical navigation (moves visual line if no count)|
 | `<C-d>`            | Normal | Scroll down half page and center cursor (`zz`).               |
 | `<C-u>`            | Normal | Scroll up half page and center cursor (`zz`).                 |
 | `n`                | Normal | Jump to next search match and center cursor.                  |
@@ -93,8 +95,8 @@ Leader key is set to `<Space>`.
 | `<`                | Visual | Unindent selection and keep visual mode.                      |
 | `>`                | Visual | Indent selection and keep visual mode.                        |
 | `<C-^>` or `<C-6>` | Normal | Toggle between active buffer and alternate (previous) buffer. |
-| `[b`               | Normal | Jump to previous buffer.                                      |
-| `]b`               | Normal | Jump to next buffer.                                          |
+| `[b` / `]b`        | Normal | Jump to previous / next open buffer.                          |
+| `[d` / `]d`        | Normal | Jump to previous / next diagnostic error/warning.             |
 
 ## Jump History and Context
 
@@ -203,22 +205,29 @@ Leader key is set to `<Space>`.
 
 ## Git and Diffs (`mini.diff` & `mini.git`)
 
-| Keymap | Mode    | Description                      |
-| :----- | :------ | :------------------------------- |
-| `[h`   | Normal  | Jump to previous diff hunk.      |
-| `]h`   | Normal  | Jump to next diff hunk.          |
-| `gh`   | Normal  | Apply diff hunk under cursor.    |
-| `gH`   | Normal  | Reset diff hunk under cursor.    |
-| `:Git` | Command | Run Git command in split window. |
+| Keymap                     | Mode    | Description                                      |
+| :------------------------- | :------ | :----------------------------------------------- |
+| `[h`                       | Normal  | Jump to previous diff hunk.                      |
+| `]h`                       | Normal  | Jump to next diff hunk.                          |
+| `<leader>ghs` / `<leader>hs` | Normal  | Stage git hunk under cursor (operator).          |
+| `<leader>ghp` / `<leader>hp` | Normal  | Toggle inline diff overlay preview.              |
+| `<leader>ghb` / `<leader>gb` | Normal  | Show Git blame and commit details at cursor.     |
+| `gh`                       | Normal  | Apply diff hunk under cursor.                    |
+| `gH`                       | Normal  | Reset diff hunk under cursor.                    |
+| `:Git`                     | Command | Run Git command in split window.                 |
 
 ## LSP and Code Formatting (`conform.nvim`)
 
-| Keymap      | Mode           | Description                                                                  |
-| :---------- | :------------- | :--------------------------------------------------------------------------- |
-| `gd`        | Normal         | Jump to symbol definition.                                                   |
-| `<leader>f` | Normal, Visual | Format active buffer or visual selection (`conform.nvim` with LSP fallback). |
-| `K`         | Normal         | Show hover documentation (native LSP).                                       |
-| `[d` / `]d` | Normal         | Jump to previous / next diagnostic (native LSP).                             |
+| Keymap        | Mode           | Description                                                                  |
+| :------------ | :------------- | :--------------------------------------------------------------------------- |
+| `gd`          | Normal         | Jump to symbol definition.                                                   |
+| `K`           | Normal         | Show hover documentation (native LSP with rounded border).                   |
+| `<leader>cr`  | Normal         | Rename symbol across workspace.                                              |
+| `<leader>ca`  | Normal         | Open code actions menu.                                                      |
+| `<leader>cd`  | Normal         | Show line diagnostics floating window.                                       |
+| `<leader>cw`  | Normal         | Trim trailing whitespace in active buffer.                                   |
+| `<leader>f`   | Normal, Visual | Format active buffer or visual selection (`conform.nvim` with LSP fallback). |
+| `[d` / `]d`   | Normal         | Jump to previous / next diagnostic.                                          |
 
 ## CSV Table Navigation (`csvview.nvim`)
 

@@ -6,6 +6,22 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### 2026-09-01
+
+#### Added
+- Added cursor position restoration upon reopening files (`BufReadPost`).
+- Added terminal buffer auto-close on clean process exit (`TermClose`).
+- Added floating terminal toggle (`<leader>tf`) with clean rounded borders and persistent shell buffer.
+- Added wrap-aware vertical navigation for `j` and `k`.
+- Added diagnostic jumping keymaps (`[d` / `]d`) and line diagnostic float (`<leader>cd`).
+- Added Git hunk navigation (`[h` / `]h`), hunk staging (`<leader>ghs` / `<leader>hs`), overlay diff preview (`<leader>ghp` / `<leader>hp`), and git blame at cursor (`<leader>ghb` / `<leader>gb` / `<leader>hb`).
+- Enabled `mini.trailspace` with whitespace trimming keymap (`<leader>cw`).
+- Enabled `mini.cursorword` for automatic cursor word highlighting.
+- Enabled `mini.indentscope` for subtle active block indentation guides.
+- Added `diffopt:append("linematch:60")` for improved diff display accuracy.
+- Configured rounded borders across all LSP floating windows (hover, signature help, diagnostics) without deprecated APIs.
+- Updated `mini.clue` leader descriptions for `+code` and `+git`.
+
 ### 2026-08-31
 
 #### Added

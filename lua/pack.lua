@@ -79,11 +79,13 @@ miniclue.setup({
 
         -- Custom descriptions for <Leader> subgroups
         { mode = "n", keys = "<Leader>b", desc = "+buffer" },
+        { mode = "n", keys = "<Leader>c", desc = "+code" },
+        { mode = "n", keys = "<Leader>g", desc = "+git" },
         { mode = "n", keys = "<Leader>h", desc = "+help/docs" },
         { mode = "n", keys = "<Leader>i", desc = "+insert" },
         { mode = "n", keys = "<Leader>p", desc = "+picker" },
         { mode = "n", keys = "<Leader>q", desc = "+quit/session" },
-        { mode = "n", keys = "<Leader>t", desc = "+toggle" },
+        { mode = "n", keys = "<Leader>t", desc = "+toggle/terminal" },
         { mode = "n", keys = "<Leader>v", desc = "+vim/system" },
         { mode = "n", keys = "<Leader>y", desc = "+yank" },
     },
@@ -143,6 +145,12 @@ require("mini.pairs").setup()
 require("mini.surround").setup()
 require("mini.splitjoin").setup()
 require("mini.comment").setup()
+require("mini.trailspace").setup()
+require("mini.cursorword").setup()
+require("mini.indentscope").setup({
+    symbol = "│",
+    options = { try_as_border = true },
+})
 
 -- mini.ai provides extended text objects:
 -- vif / vaf (function), via / vaa (argument), vii / vai (indentation)
@@ -222,8 +230,25 @@ vim.keymap.set({ "n", "v" }, "<leader>f", function()
 end, { desc = "Format buffer or selection" })
 
 -- ── 12. Git Integration ───────────────────────────────────────────────────
-require("mini.diff").setup()
-require("mini.git").setup()
+local MiniDiff = require("mini.diff")
+MiniDiff.setup({
+    view = {
+        style = "sign",
+        signs = { add = "▎", change = "▎", delete = "▎" },
+    },
+})
+
+local MiniGit = require("mini.git")
+MiniGit.setup()
+
+vim.keymap.set("n", "]h", function() MiniDiff.goto_hunk("next") end, { desc = "Next git hunk" })
+vim.keymap.set("n", "[h", function() MiniDiff.goto_hunk("prev") end, { desc = "Previous git hunk" })
+vim.keymap.set("n", "<leader>ghs", MiniDiff.operator, { desc = "Stage git hunk (operator)" })
+vim.keymap.set("n", "<leader>ghp", function() MiniDiff.toggle_overlay() end, { desc = "Toggle git diff overlay" })
+vim.keymap.set("n", "<leader>ghb", function() MiniGit.show_at_cursor() end, { desc = "Show git blame/commit at cursor" })
+vim.keymap.set("n", "<leader>hs", MiniDiff.operator, { desc = "Stage git hunk (operator)" })
+vim.keymap.set("n", "<leader>hp", function() MiniDiff.toggle_overlay() end, { desc = "Toggle git diff overlay" })
+vim.keymap.set("n", "<leader>hb", function() MiniGit.show_at_cursor() end, { desc = "Show git blame/commit at cursor" })
 
 -- ── 13. Autocompletion & Snippets ─────────────────────────────────────────
 local MiniCompletion = require("mini.completion")

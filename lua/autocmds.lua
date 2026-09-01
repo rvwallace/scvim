@@ -20,6 +20,21 @@ autocmd({ "FocusGained", "BufEnter" }, {
     end,
 })
 
+-- Return to last cursor position when reopening a file
+autocmd("BufReadPost", {
+    desc = "Restore last cursor position",
+    callback = function(args)
+        if vim.o.diff then
+            return
+        end
+        local mark = vim.api.nvim_buf_get_mark(args.buf, '"')
+        local line_count = vim.api.nvim_buf_line_count(args.buf)
+        if mark[1] > 0 and mark[1] <= line_count then
+            pcall(vim.api.nvim_win_set_cursor, 0, mark)
+        end
+    end,
+})
+
 -- ── Formatting & Editing Behavior ─────────────────────────────────────────
 -- Prevent automatic insertion of comment leaders on new lines (Enter or o/O)
 autocmd("FileType", {
@@ -62,5 +77,15 @@ autocmd("TermOpen", {
         vim.opt_local.relativenumber = false
         vim.opt_local.signcolumn = "no"
         vim.cmd("startinsert")
+    end,
+})
+
+-- Auto-close terminal buffers on clean exit (exit code 0)
+autocmd("TermClose", {
+    desc = "Auto-close terminal buffer on successful process exit",
+    callback = function(args)
+        if vim.v.event.status == 0 then
+            vim.api.nvim_buf_delete(args.buf, { force = false })
+        end
     end,
 })

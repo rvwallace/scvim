@@ -47,6 +47,14 @@ vim.keymap.set("n", "gcO", function() insert_comment("above") end, { desc = "Ins
 vim.keymap.set("n", "gcA", function() insert_comment("eol") end,   { desc = "Insert comment at end of line" })
 
 -- ── Movement & Scrolling ──────────────────────────────────────────────────
+-- Wrap-aware vertical movement (moves visually unless a count like 5j is provided)
+vim.keymap.set("n", "j", function()
+    return vim.v.count == 0 and "gj" or "j"
+end, { expr = true, silent = true, desc = "Down (wrap-aware)" })
+vim.keymap.set("n", "k", function()
+    return vim.v.count == 0 and "gk" or "k"
+end, { expr = true, silent = true, desc = "Up (wrap-aware)" })
+
 -- Centered scrolling: zz centers cursor after half-page jump
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Scroll down half page (centered)" })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Scroll up half page (centered)" })
@@ -126,9 +134,22 @@ vim.keymap.set("n", "<leader>iu", function()
     insert_text(uuid)
 end, { desc = "Insert random UUID v4" })
 
--- ── Buffer Navigation ─────────────────────────────────────────────────────
+-- ── Buffer & Diagnostic Navigation ─────────────────────────────────────────
 vim.keymap.set("n", "[b", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
 vim.keymap.set("n", "]b", "<cmd>bnext<cr>",     { desc = "Next buffer" })
+vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, { desc = "Previous diagnostic" })
+vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end,  { desc = "Next diagnostic" })
+
+-- ── Code Actions & Editing (<leader>c) ────────────────────────────────────
+vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line diagnostic float" })
+vim.keymap.set("n", "<leader>cw", function()
+    local ok, trailspace = pcall(require, "mini.trailspace")
+    if ok then
+        trailspace.trim()
+    else
+        vim.cmd([[%s/\s\+$//e]])
+    end
+end, { desc = "Trim trailing whitespace" })
 
 -- ── Undotree ──────────────────────────────────────────────────────────────
 vim.keymap.set("n", "<leader>u", function()
@@ -166,11 +187,47 @@ end, { desc = "Toggle spell check" })
 vim.keymap.set("n", "<leader>tm", "<cmd>RenderMarkdown toggle<cr>", { desc = "Toggle markdown render" })
 vim.keymap.set("n", "<leader>tc", "<cmd>CsvViewToggle<cr>",          { desc = "Toggle CSV table view" })
 
--- ── Terminal Splits ───────────────────────────────────────────────────────
+-- ── Floating & Split Terminals ────────────────────────────────────────────
+local float_term = { buf = nil, win = nil }
+
+local function toggle_floating_terminal()
+    if float_term.win and vim.api.nvim_win_is_valid(float_term.win) then
+        vim.api.nvim_win_close(float_term.win, false)
+        float_term.win = nil
+        return
+    end
+
+    if not float_term.buf or not vim.api.nvim_buf_is_valid(float_term.buf) then
+        float_term.buf = vim.api.nvim_create_buf(false, true)
+        vim.bo[float_term.buf].bufhidden = "hide"
+    end
+
+    local width = math.floor(vim.o.columns * 0.8)
+    local height = math.floor(vim.o.lines * 0.8)
+    local row = math.floor((vim.o.lines - height) / 2)
+    local col = math.floor((vim.o.columns - width) / 2)
+
+    float_term.win = vim.api.nvim_open_win(float_term.buf, true, {
+        relative = "editor",
+        width = width,
+        height = height,
+        row = row,
+        col = col,
+        style = "minimal",
+        border = "rounded",
+    })
+
+    if vim.bo[float_term.buf].buftype ~= "terminal" then
+        vim.fn.termopen(os.getenv("SHELL") or "zsh")
+    end
+
+    vim.cmd("startinsert")
+end
+
+vim.keymap.set("n", "<leader>tf", toggle_floating_terminal, { desc = "Toggle floating terminal" })
 vim.keymap.set("n", "<leader>tt", function()
     vim.cmd("botright 12split | terminal")
 end, { desc = "Open bottom terminal split" })
-
 vim.keymap.set("n", "<leader>tv", function()
     vim.cmd("vsplit | terminal")
 end, { desc = "Open vertical terminal split" })
