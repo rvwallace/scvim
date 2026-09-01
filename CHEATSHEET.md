@@ -10,10 +10,22 @@ Leader key is set to `<Space>`.
 | `<leader>/`  | Normal, Visual         | Toggle line or selection comment.          |
 | `<leader>u`  | Normal                 | Toggle builtin Undotree.                   |
 | `<leader>X`  | Normal                 | Make current file executable (`chmod +x`). |
-| `<leader>s`  | Normal                 | Substitute word under cursor globally.     |
 | `<C-c>`      | Normal                 | Clear search highlights.                   |
 | `<C-c>`      | Insert                 | Exit insert mode.                          |
 | `<Esc><Esc>` | Terminal               | Exit terminal mode.                        |
+
+## Splits and Substitution (`<leader>s`)
+
+| Keymap       | Mode   | Description                                            |
+| :----------- | :----- | :----------------------------------------------------- |
+| `<leader>ss` | Normal | Substitute word under cursor globally.                 |
+| `<leader>sv` | Normal | Split active window vertically (`<C-w>v`).             |
+| `<leader>sh` | Normal | Split active window horizontally (`<C-w>s`).           |
+| `<leader>se` | Normal | Equalize size of all open split windows (`<C-w>=`).    |
+| `<leader>s=` | Normal | Equalize size of all open split windows (`<C-w>=`).    |
+| `<leader>sz` | Normal | Toggle zoom/maximize active split (`mini.misc`).       |
+| `<leader>sm` | Normal | Toggle zoom/maximize active split (`mini.misc`).       |
+| `<leader>sx` | Normal | Close current split window (`:close`).                 |
 
 ## Quit and Session (`<leader>q`)
 
@@ -43,6 +55,19 @@ Leader key is set to `<Space>`.
 | `<leader>hl` | Normal | Open version changelog history (`CHANGELOG.md`).      |
 | `<leader>hk` | Normal | Open language LSP and parser matrix (`LANGUAGES.md`). |
 | `<leader>hh` | Normal | Search Neovim help documentation tags (`:help`).      |
+
+## Dynamic Language Actions (`<leader>l`)
+
+*Context-aware keymaps that only activate and show in `mini.clue` for specific filetypes.*
+
+### Markdown (`FileType markdown`)
+
+| Keymap                     | Mode           | Description                                       |
+| :------------------------- | :------------- | :------------------------------------------------ |
+| `<leader>lx`               | Normal, Visual | Toggle task checkbox (`[ ]` ↔ `[x]`).             |
+| `<leader>lp`               | Normal         | Toggle Markdown preview rendering.                |
+| `<leader>lb`               | Normal         | Toggle bullet list item (`- `).                   |
+| `<leader>l1`–`<leader>l6`  | Normal         | Toggle / set heading levels (`# ` through `###### `). |
 
 ## Quick Toggles and Terminal (`<leader>t`)
 
@@ -74,9 +99,11 @@ Leader key is set to `<Space>`.
 
 | Keymap       | Mode           | Description                                       |
 | :----------- | :------------- | :------------------------------------------------ |
+| `x`          | Normal         | Delete single character without copying (`"_x`).  |
 | `<leader>d`  | Normal, Visual | Delete text without copying to clipboard (`"_d`). |
 | `p`          | Visual         | Paste text without replacing register (`"_dP`).   |
-| `<leader>yp` | Normal         | Copy full file path to system clipboard.          |
+| `<leader>yp` | Normal         | Copy absolute file path to system clipboard.      |
+| `<leader>yr` | Normal         | Copy relative file path to system clipboard.      |
 | `<leader>yn` | Normal         | Copy file name to system clipboard.               |
 
 ## Navigation and Movement

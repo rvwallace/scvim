@@ -9,8 +9,17 @@ vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" }
 vim.keymap.set("n", "<leader>/", "gcc", { remap = true, desc = "Toggle line comment" })
 vim.keymap.set("v", "<leader>/", "gc",  { remap = true, desc = "Toggle selection comment" })
 vim.keymap.set("n", "<leader>X", "<cmd>!chmod +x %<cr>", { silent = true, desc = "Make file executable" })
-vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<left><Left><Left>]],
+
+-- ── Splits & Windows (<leader>s) ──────────────────────────────────────────
+vim.keymap.set("n", "<leader>ss", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<left><Left><Left>]],
     { desc = "Substitute word under cursor globally" })
+vim.keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
+vim.keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
+vim.keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
+vim.keymap.set("n", "<leader>s=", "<C-w>=", { desc = "Make splits equal size" })
+vim.keymap.set("n", "<leader>sz", function() require("mini.misc").zoom() end, { desc = "Toggle window zoom/maximize" })
+vim.keymap.set("n", "<leader>sm", function() require("mini.misc").zoom() end, { desc = "Toggle window zoom/maximize" })
+vim.keymap.set("n", "<leader>sx", "<cmd>close<cr>", { desc = "Close current split window" })
 
 -- ── Comment Line Insertion ────────────────────────────────────────────────
 local function insert_comment(mode)
@@ -81,6 +90,9 @@ vim.keymap.set("x", ".", function()
 end, { expr = true, desc = "Repeat last edit on visual selection" })
 
 -- ── Clipboard & Delete ────────────────────────────────────────────────────
+-- Delete single character without clobbering clipboard register
+vim.keymap.set("n", "x", '"_x', { desc = "Delete character without copying" })
+
 -- Paste over visual selection without losing yanked buffer to black hole register
 vim.keymap.set("x", "p", [["_dP]], { desc = "Paste over selection without losing clipboard" })
 
@@ -93,6 +105,12 @@ vim.keymap.set("n", "<leader>yp", function()
     vim.fn.setreg("+", path)
     vim.notify("Copied: " .. path)
 end, { desc = "Yank absolute file path" })
+
+vim.keymap.set("n", "<leader>yr", function()
+    local relpath = vim.fn.expand("%:~:.")
+    vim.fn.setreg("+", relpath)
+    vim.notify("Copied: " .. relpath)
+end, { desc = "Yank relative file path" })
 
 vim.keymap.set("n", "<leader>yn", function()
     local name = vim.fn.expand("%:t")

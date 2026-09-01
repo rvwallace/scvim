@@ -83,8 +83,10 @@ miniclue.setup({
         { mode = "n", keys = "<Leader>g", desc = "+git" },
         { mode = "n", keys = "<Leader>h", desc = "+help/docs" },
         { mode = "n", keys = "<Leader>i", desc = "+insert" },
+        { mode = "n", keys = "<Leader>l", desc = "+language/local" },
         { mode = "n", keys = "<Leader>p", desc = "+picker" },
         { mode = "n", keys = "<Leader>q", desc = "+quit/session" },
+        { mode = "n", keys = "<Leader>s", desc = "+split/substitute" },
         { mode = "n", keys = "<Leader>t", desc = "+toggle/terminal" },
         { mode = "n", keys = "<Leader>v", desc = "+vim/system" },
         { mode = "n", keys = "<Leader>y", desc = "+yank" },
@@ -145,7 +147,19 @@ require("mini.pairs").setup()
 require("mini.surround").setup()
 require("mini.splitjoin").setup()
 require("mini.comment").setup()
-require("mini.trailspace").setup()
+require("mini.misc").setup()
+
+local mini_trailspace = require("mini.trailspace")
+mini_trailspace.setup({ only_in_normal_buffers = true })
+
+-- Unhighlight trailing whitespace when cursor moves for subtle editing
+vim.api.nvim_create_autocmd("CursorMoved", {
+    desc = "Unhighlight trailing whitespace on cursor movement",
+    callback = function()
+        mini_trailspace.unhighlight()
+    end,
+})
+
 require("mini.cursorword").setup()
 require("mini.indentscope").setup({
     symbol = "│",

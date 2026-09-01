@@ -68,6 +68,93 @@ autocmd("FileType", {
     end,
 })
 
+-- ── Markdown Language Actions (<leader>l in Markdown) ──────────────────────
+local function toggle_markdown_task(line)
+    if line:match("^%s*[%-%*%+]%s+%[%s%]") then
+        return (line:gsub("^(%s*[%-%*%+]%s+)%[%s%]", "%1[x]", 1))
+    elseif line:match("^%s*[%-%*%+]%s+%[[xX]%]") then
+        return (line:gsub("^(%s*[%-%*%+]%s+)%[[xX]%]", "%1[ ]", 1))
+    elseif line:match("^%s*[%-%*%+]%s+") then
+        return (line:gsub("^(%s*[%-%*%+]%s+)", "%1[ ] ", 1))
+    elseif line:match("%S") then
+        local indent, text = line:match("^(%s*)(.*)$")
+        return indent .. "- [ ] " .. text
+    end
+    return line
+end
+
+local function toggle_markdown_bullet(line)
+    if line:match("^%s*[%-%*%+]%s+") then
+        return (line:gsub("^(%s*)[%-%*%+]%s+", "%1", 1))
+    elseif line:match("%S") then
+        local indent, text = line:match("^(%s*)(.*)$")
+        return indent .. "- " .. text
+    end
+    return line
+end
+
+local function toggle_markdown_heading(level)
+    local line = vim.api.nvim_get_current_line()
+    local indent, content = line:match("^(%s*)#*%s*(.*)$")
+    indent = indent or ""
+    content = content or line
+
+    local current_hashes = line:match("^%s*(#+)")
+    if current_hashes and #current_hashes == level then
+        vim.api.nvim_set_current_line(indent .. content)
+    else
+        vim.api.nvim_set_current_line(indent .. string.rep("#", level) .. " " .. content)
+    end
+end
+
+autocmd("FileType", {
+    desc = "Setup Markdown buffer settings and dynamic <leader>l actions",
+    pattern = { "markdown" },
+    callback = function(args)
+        local buf = args.buf
+        vim.opt_local.wrap = true
+        vim.opt_local.linebreak = true
+        vim.opt_local.spell = true
+
+        local map = function(mode, lhs, rhs, desc)
+            vim.keymap.set(mode, lhs, rhs, { buffer = buf, desc = desc })
+        end
+
+        -- Task toggle (normal and visual)
+        map("n", "<leader>lx", function()
+            local line = vim.api.nvim_get_current_line()
+            vim.api.nvim_set_current_line(toggle_markdown_task(line))
+        end, "Toggle task checkbox")
+
+        map("v", "<leader>lx", function()
+            local start_row = vim.fn.line("'<")
+            local end_row = vim.fn.line("'>")
+            local lines = vim.api.nvim_buf_get_lines(buf, start_row - 1, end_row, false)
+            for i, l in ipairs(lines) do
+                lines[i] = toggle_markdown_task(l)
+            end
+            vim.api.nvim_buf_set_lines(buf, start_row - 1, end_row, false, lines)
+        end, "Toggle task checkboxes on selection")
+
+        -- Preview toggle
+        map("n", "<leader>lp", "<cmd>RenderMarkdown toggle<cr>", "Toggle markdown render preview")
+
+        -- Bullets
+        map("n", "<leader>lb", function()
+            local line = vim.api.nvim_get_current_line()
+            vim.api.nvim_set_current_line(toggle_markdown_bullet(line))
+        end, "Toggle bullet list item")
+
+        -- Headings 1 through 6
+        map("n", "<leader>l1", function() toggle_markdown_heading(1) end, "Toggle Heading 1 (#)")
+        map("n", "<leader>l2", function() toggle_markdown_heading(2) end, "Toggle Heading 2 (##)")
+        map("n", "<leader>l3", function() toggle_markdown_heading(3) end, "Toggle Heading 3 (###)")
+        map("n", "<leader>l4", function() toggle_markdown_heading(4) end, "Toggle Heading 4 (####)")
+        map("n", "<leader>l5", function() toggle_markdown_heading(5) end, "Toggle Heading 5 (#####)")
+        map("n", "<leader>l6", function() toggle_markdown_heading(6) end, "Toggle Heading 6 (######)")
+    end,
+})
+
 -- ── Terminal Buffers ──────────────────────────────────────────────────────
 -- Disable line numbers and sign column in terminal buffers, and enter insert mode
 autocmd("TermOpen", {

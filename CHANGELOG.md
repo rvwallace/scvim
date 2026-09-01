@@ -20,7 +20,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Enabled `mini.indentscope` for subtle active block indentation guides.
 - Added `diffopt:append("linematch:60")` for improved diff display accuracy.
 - Configured rounded borders across all LSP floating windows (hover, signature help, diagnostics) without deprecated APIs.
-- Updated `mini.clue` leader descriptions for `+code` and `+git`.
+- Added single-character black hole delete (`x -> "_x"`) to protect clipboard registers.
+- Added relative file path yank keymap (`<leader>yr`).
+- Added window split and zoom management (`<leader>s`): vertical split (`<leader>sv`), horizontal split (`<leader>sh`), equalize splits (`<leader>se`), close split (`<leader>sx`), and toggle maximize/zoom (`<leader>sz` / `<leader>sm` via `mini.misc`).
+- Integrated `mini.misc` for native window zooming without extra external plugins.
+- Configured `mini.trailspace` to unhighlight on cursor movement for subtle whitespace feedback.
+- Added dynamic `+language` group architecture (`<leader>l`) for context-aware, filetype-specific actions with zero menu clutter in other languages.
+- Added buffer-local Markdown actions under `<leader>l`: task checkbox toggling (`<leader>lx`), preview toggle (`<leader>lp`), bullet lists (`<leader>lb`), and heading level setters (`<leader>l1`–`<leader>l6`).
+- Updated `mini.clue` leader descriptions for `+code`, `+git`, `+language/local`, and `+split/substitute`.
 
 ### 2026-08-31
 
