@@ -57,14 +57,105 @@ autocmd("FileType", {
     end,
 })
 
--- Go standard formatting: hard tabs (expandtab = false)
+-- ── Language Execution Helper ─────────────────────────────────────────────
+local function run_in_term(cmd)
+    vim.cmd("silent! write")
+    vim.cmd("botright 12split | terminal " .. cmd)
+end
+
+-- ── Python Language Actions (<leader>l in Python, uv-native) ───────────────
 autocmd("FileType", {
-    desc = "Set hard tabs for Go files",
+    desc = "Setup Python buffer settings and dynamic <leader>l actions (uv-native)",
+    pattern = { "python" },
+    callback = function(args)
+        local buf = args.buf
+        local map = function(mode, lhs, rhs, desc)
+            vim.keymap.set(mode, lhs, rhs, { buffer = buf, desc = desc })
+        end
+
+        -- Run current script via uv
+        map("n", "<leader>lr", function()
+            local file = vim.fn.expand("%")
+            run_in_term("uv run " .. vim.fn.fnameescape(file))
+        end, "Run script (uv run %)")
+
+        -- Run pytest across workspace
+        map("n", "<leader>lt", function()
+            run_in_term("uv run pytest")
+        end, "Run all tests (uv run pytest)")
+
+        -- Run pytest on current file
+        map("n", "<leader>lT", function()
+            local file = vim.fn.expand("%")
+            run_in_term("uv run pytest " .. vim.fn.fnameescape(file))
+        end, "Run tests in file (uv run pytest %)")
+
+        -- Launch interactive Python REPL with uv environment
+        map("n", "<leader>li", function()
+            run_in_term("uv run python")
+        end, "Open Python REPL (uv run python)")
+
+        -- Insert PEP 723 inline script metadata block header
+        map("n", "<leader>lm", function()
+            local pep723 = {
+                "# /// script",
+                '# requires-python = ">=3.11"',
+                "# dependencies = [",
+                "# ]",
+                "# ///",
+                "",
+            }
+            local first_line = vim.api.nvim_buf_get_lines(buf, 0, 1, false)[1] or ""
+            local start_idx = first_line:match("^#!") and 1 or 0
+            vim.api.nvim_buf_set_lines(buf, start_idx, start_idx, false, pep723)
+            vim.notify("Inserted PEP 723 inline script metadata header")
+        end, "Insert PEP 723 script metadata header")
+    end,
+})
+
+-- ── Go Language Actions (<leader>l in Go) ──────────────────────────────────
+autocmd("FileType", {
+    desc = "Setup Go buffer settings and dynamic <leader>l actions",
     pattern = { "go" },
-    callback = function()
+    callback = function(args)
+        local buf = args.buf
         vim.opt_local.tabstop = 4
         vim.opt_local.shiftwidth = 4
         vim.opt_local.expandtab = false
+
+        local map = function(mode, lhs, rhs, desc)
+            vim.keymap.set(mode, lhs, rhs, { buffer = buf, desc = desc })
+        end
+
+        -- Run package / main
+        map("n", "<leader>lr", function()
+            run_in_term("go run .")
+        end, "Run Go package (go run .)")
+
+        -- Run all tests
+        map("n", "<leader>lt", function()
+            run_in_term("go test ./...")
+        end, "Run all tests (go test ./...)")
+
+        -- Run tests for current package
+        map("n", "<leader>lT", function()
+            run_in_term("go test -v .")
+        end, "Run package tests (go test -v .)")
+
+        -- Go mod tidy
+        map("n", "<leader>lm", function()
+            run_in_term("go mod tidy")
+        end, "Go mod tidy")
+
+        -- Go generate
+        map("n", "<leader>lg", function()
+            run_in_term("go generate ./...")
+        end, "Go generate (go generate ./...)")
+
+        -- Go vet
+        map("n", "<leader>lv", function()
+            run_in_term("go vet ./...")
+        end, "Go vet (go vet ./...)")
     end,
 })
 

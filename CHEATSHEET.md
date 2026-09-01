@@ -60,6 +60,27 @@ Leader key is set to `<Space>`.
 
 *Context-aware keymaps that only activate and show in `mini.clue` for specific filetypes.*
 
+### Python (`FileType python`, uv-native)
+
+| Keymap       | Mode   | Description                                                     |
+| :----------- | :----- | :-------------------------------------------------------------- |
+| `<leader>lr` | Normal | Run active script via `uv run %` in terminal split.             |
+| `<leader>lt` | Normal | Run test suite via `uv run pytest` in terminal split.           |
+| `<leader>lT` | Normal | Run tests in active file via `uv run pytest %` in split.        |
+| `<leader>li` | Normal | Launch interactive Python REPL via `uv run python` in split.    |
+| `<leader>lm` | Normal | Insert PEP 723 inline script metadata header block.             |
+
+### Go (`FileType go`)
+
+| Keymap       | Mode   | Description                                                     |
+| :----------- | :----- | :-------------------------------------------------------------- |
+| `<leader>lr` | Normal | Run active package via `go run .` in terminal split.            |
+| `<leader>lt` | Normal | Run all workspace tests via `go test ./...` in terminal split.  |
+| `<leader>lT` | Normal | Run verbose tests for active package via `go test -v .`         |
+| `<leader>lm` | Normal | Clean and update module dependencies via `go mod tidy`.         |
+| `<leader>lg` | Normal | Run code generators via `go generate ./...`.                    |
+| `<leader>lv` | Normal | Run static analysis vet checks via `go vet ./...`.              |
+
 ### Markdown (`FileType markdown`)
 
 | Keymap                     | Mode           | Description                                       |
