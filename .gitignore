@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Logs
+*.log
+
+# Vim / Neovim swap, backup, and undo files
+*.swp
+*.swo
+*~
+*.un~
+.netrwhist
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
+# Session / state files
+Session.vim
+.Session.vim
+
+# Local scratch / test files
+scratch/
