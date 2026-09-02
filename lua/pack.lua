@@ -235,6 +235,7 @@ conform.setup({
         javascriptreact  = { "prettier" },
         typescript       = { "prettier" },
         typescriptreact  = { "prettier" },
+        swift            = { "swiftformat", "swift_format", stop_after_first = true },
     },
 })
 

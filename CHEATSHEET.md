@@ -82,6 +82,15 @@ Leader key is set to `<Space>`.
 | `<leader>lg` | Normal | Run code generators via `go generate ./...`.                    |
 | `<leader>lv` | Normal | Run static analysis vet checks via `go vet ./...`.              |
 
+### Swift (`FileType swift`)
+
+| Keymap       | Mode   | Description                                                     |
+| :----------- | :----- | :-------------------------------------------------------------- |
+| `<leader>lr` | Normal | Run active package via `swift run` in terminal split.           |
+| `<leader>lb` | Normal | Build active package via `swift build` in terminal split.       |
+| `<leader>lt` | Normal | Run test suite via `swift test` in terminal split.              |
+| `<leader>lp` | Normal | Resolve package dependencies via `swift package resolve`.       |
+
 ### Markdown (`FileType markdown`)
 
 | Keymap                     | Mode           | Description                                       |

@@ -184,6 +184,7 @@ local servers = {
     "marksman",
     "ruff",
     "rust_analyzer",
+    "sourcekit",
     "taplo",
     "ts_ls",
     "yamlls",

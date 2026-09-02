@@ -17,6 +17,7 @@ This document lists supported languages, Tree-sitter parsers, and LSP servers.
 | **Markdown** | `markdown`, `markdown_inline` | `marksman` | `marksman` |
 | **Python** | `python` | `basedpyright`, `ruff` | `basedpyright`, `ruff` |
 | **Rust** | `rust` | `rust_analyzer` | `rust-analyzer` |
+| **Swift** | `swift` | `sourcekit` | System (`sourcekit-lsp` via Xcode / CLI Tools) |
 | **Terraform / HCL** | `terraform` | `terraformls` | `terraform-ls` |
 | **TOML** | `toml` | `taplo` | `taplo` |
 | **TypeScript / JS** | `typescript`, `javascript`, `tsx` | `ts_ls` | `typescript-language-server` |

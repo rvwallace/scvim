@@ -12,6 +12,7 @@ local ensure_installed = {
     "go", "gomod", "gosum", "gowork",
     "python",
     "rust",
+    "swift",
     "terraform",
     "javascript", "typescript", "tsx",
     "html", "css",

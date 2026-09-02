@@ -173,6 +173,42 @@ autocmd("FileType", {
     end,
 })
 
+-- ── Swift Language Actions (<leader>l in Swift) ────────────────────────────
+autocmd("FileType", {
+    desc = "Setup Swift buffer settings and dynamic <leader>l actions",
+    pattern = { "swift" },
+    callback = function(args)
+        local buf = args.buf
+        vim.opt_local.tabstop = 4
+        vim.opt_local.shiftwidth = 4
+        vim.opt_local.expandtab = true
+
+        local map = function(mode, lhs, rhs, desc)
+            vim.keymap.set(mode, lhs, rhs, { buffer = buf, desc = desc })
+        end
+
+        -- Run package via swift run
+        map("n", "<leader>lr", function()
+            run_in_term("swift run")
+        end, "Run Swift package (swift run)")
+
+        -- Build package via swift build
+        map("n", "<leader>lb", function()
+            run_in_term("swift build")
+        end, "Build package (swift build)")
+
+        -- Run tests via swift test
+        map("n", "<leader>lt", function()
+            run_in_term("swift test")
+        end, "Run tests (swift test)")
+
+        -- Resolve package dependencies
+        map("n", "<leader>lp", function()
+            run_in_term("swift package resolve")
+        end, "Resolve package dependencies (swift package resolve)")
+    end,
+})
+
 -- ── Markdown Language Actions (<leader>l in Markdown) ──────────────────────
 local function toggle_markdown_task(line)
     if line:match("^%s*[%-%*%+]%s+%[%s%]") then
