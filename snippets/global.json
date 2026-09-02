@@ -1,0 +1,80 @@
+{
+  "Shebang: Bash (Strict + ShellCheck)": {
+    "prefix": ["#!bash", "#!sh", "shebang-bash"],
+    "body": [
+      "#!/usr/bin/env bash",
+      "# shellcheck shell=bash",
+      "set -euo pipefail",
+      "",
+      "${0}"
+    ],
+    "description": "Bash shebang with shellcheck directive and strict mode"
+  },
+  "Shebang: Zsh (Strict Mode)": {
+    "prefix": ["#!zsh", "shebang-zsh"],
+    "body": [
+      "#!/usr/bin/env zsh",
+      "set -euo pipefail",
+      "",
+      "${0}"
+    ],
+    "description": "Zsh shebang with strict mode"
+  },
+  "Shebang: POSIX Shell": {
+    "prefix": ["#!posix", "shebang-sh"],
+    "body": [
+      "#!/usr/bin/env sh",
+      "set -eu",
+      "",
+      "${0}"
+    ],
+    "description": "POSIX sh shebang with basic strict mode"
+  },
+  "Shebang: Python 3": {
+    "prefix": ["#!python", "#!py", "shebang-python"],
+    "body": [
+      "#!/usr/bin/env python3",
+      "from __future__ import annotations",
+      "",
+      "${0}"
+    ],
+    "description": "Python 3 shebang with future annotations"
+  },
+  "Shebang: Python uv PEP 723": {
+    "prefix": ["#!uv", "shebang-uv", "pep723-shebang"],
+    "body": [
+      "#!/usr/bin/env -S uv run --script",
+      "# /// script",
+      "# requires-python = \">=3.12\"",
+      "# dependencies = [",
+      "#     \"${1:requests}\",",
+      "# ]",
+      "# bin-name = \"${2:tool-name}\"",
+      "# ///",
+      "from __future__ import annotations",
+      "",
+      "${0}"
+    ],
+    "description": "uv run --script shebang with PEP 723 inline dependencies and bin-name"
+  },
+  "Shebang: Swift (Darwin)": {
+    "prefix": ["#!swift", "shebang-swift"],
+    "body": [
+      "#!/usr/bin/env swift",
+      "// toolbox-platforms: darwin",
+      "import Foundation",
+      "",
+      "${0}"
+    ],
+    "description": "Swift script shebang with Foundation"
+  },
+  "Shebang: Node.js": {
+    "prefix": ["#!node", "shebang-node"],
+    "body": [
+      "#!/usr/bin/env node",
+      "",
+      "${0}"
+    ],
+    "description": "Node.js shebang"
+  }
+}

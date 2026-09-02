@@ -310,6 +310,8 @@ Leader key is set to `<Space>`.
 | `<C-l>`     | Insert, Select | Jump to next snippet tabstop.                  |
 | `<C-h>`     | Insert, Select | Jump to previous snippet tabstop.              |
 
+*Custom snippets are organized in the [`snippets/`](./snippets/) directory (e.g. `global.json`, `python.json`, `sh.json`).*
+
 ## CSV Table Navigation (`csvview.nvim`)
 
 | Keymap      | Mode             | Description                            |

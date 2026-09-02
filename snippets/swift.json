@@ -1,0 +1,48 @@
+{
+  "Swift CLI Script Boilerplate": {
+    "prefix": "script",
+    "body": [
+      "#!/usr/bin/env swift",
+      "// toolbox-platforms: darwin",
+      "import Foundation",
+      "",
+      "struct Style {",
+      "    static let reset = \"\\u{001B}[0m\"",
+      "    static let bold = \"\\u{001B}[1m\"",
+      "    static let green = \"\\u{001B}[32m\"",
+      "    static let red = \"\\u{001B}[31m\"",
+      "    static let cyan = \"\\u{001B}[36m\"",
+      "}",
+      "",
+      "func main() {",
+      "    let args = Array(CommandLine.arguments.dropFirst())",
+      "    ${0:print(\"Hello from Swift script!\")}",
+      "}",
+      "",
+      "main()"
+    ],
+    "description": "Darwin Swift standalone script boilerplate with ANSI styling"
+  },
+  "Swift Shell Command Runner": {
+    "prefix": "shell-cmd",
+    "body": [
+      "@discardableResult",
+      "func shell(_ command: String) -> String {",
+      "    let process = Process()",
+      "    let pipe = Pipe()",
+      "    process.standardOutput = pipe",
+      "    process.standardError = pipe",
+      "    process.arguments = [\"-c\", command]",
+      "    process.executableURL = URL(fileURLWithPath: \"/bin/zsh\")",
+      "    do {",
+      "        try process.run()",
+      "        let data = pipe.fileHandleForReading.readDataToEndOfFile()",
+      "        return String(data: data, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines) ?? \"\"",
+      "    } catch {",
+      "        return \"\"",
+      "    }",
+      "}"
+    ],
+    "description": "Execute shell command via Process and return stdout string"
+  }
+}

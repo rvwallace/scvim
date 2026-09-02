@@ -283,9 +283,13 @@ MiniCompletion.setup({
 })
 
 local MiniSnippets = require("mini.snippets")
+local config_snippets = vim.fn.stdpath("config") .. "/snippets"
 MiniSnippets.setup({
     snippets = {
-        MiniSnippets.gen_loader.from_lang(), -- loads friendly-snippets automatically
+        -- 1. Language-specific snippets (friendly-snippets + local snippets/<filetype>.json)
+        MiniSnippets.gen_loader.from_lang(),
+        -- 2. Global shebangs and universal snippets across all filetypes
+        MiniSnippets.gen_loader.from_file(config_snippets .. "/global.json"),
     },
     expand = {
         insert = function(snippet)

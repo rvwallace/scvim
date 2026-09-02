@@ -25,3 +25,5 @@ Session.vim
 
 # Local scratch / test files
 scratch/
+NOTES.md
+*.local.md

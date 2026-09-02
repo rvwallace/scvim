@@ -39,6 +39,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added Git diff signs toggle keymap (`<leader>tg`) under quick toggles.
 - Added comprehensive Swift language support: `sourcekit` LSP integration (via macOS Xcode / CLI Tools), Tree-sitter parser, `conform.nvim` formatting (`swiftformat` / `swift_format` with LSP fallback), 4-space indentation, and buffer-local dynamic actions under `<leader>l` (`swift run`, `swift build`, `swift test`, `swift package resolve`).
 - Added Shell/Bash/Zsh buffer-local dynamic actions under `<leader>l`: run script (`<leader>lr`), make executable and run (`<leader>lx`), syntax dry-run check (`<leader>lc`), and ShellCheck analysis (`<leader>ls`), alongside `shfmt` formatting in `conform.nvim` for `sh`, `bash`, and `zsh`.
+- Added custom user snippet system (`snippets/`) with global shebang triggers (`#!bash`, `#!zsh`, `#!uv`, `#!python`, `#!swift`, `#!node`), PEP 723 standalone script templates, and Shell script argument parsing boilerplates.
 
 ### 2026-08-31
 
