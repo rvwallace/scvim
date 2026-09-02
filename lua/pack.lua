@@ -284,22 +284,90 @@ MiniCompletion.setup({
 
 local MiniSnippets = require("mini.snippets")
 local config_snippets = vim.fn.stdpath("config") .. "/snippets"
+
+-- Dedicated loader for custom snippets in config directory
+local function normalize_snippets(snips)
+    local out = {}
+    for _, s in ipairs(snips or {}) do
+        local body = s.body
+        if type(body) == "table" then
+            body = table.concat(body, "\n")
+        end
+        if type(s.prefix) == "table" then
+            for _, p in ipairs(s.prefix) do
+                local copy = vim.deepcopy(s)
+                copy.prefix = p
+                copy.body = body
+                table.insert(out, copy)
+            end
+        else
+            local copy = vim.deepcopy(s)
+            copy.body = body
+            table.insert(out, copy)
+        end
+    end
+    return out
+end
+
+local function custom_snippets_loader(context)
+    local buf_id = (context or {}).buf_id or 0
+    local ft = vim.bo[buf_id].filetype
+    local lang = (context or {}).lang or ft
+    local ft_aliases = {
+        sh = { "sh", "bash" },
+        bash = { "sh", "bash" },
+        zsh = { "sh", "zsh" },
+        terraform = { "terraform", "hcl" },
+        ["terraform-vars"] = { "terraform", "hcl" },
+    }
+    local langs = ft_aliases[ft] or ft_aliases[lang] or { ft, lang }
+    local res = {}
+    local seen_files = {}
+    for _, l in ipairs(langs) do
+        local file = config_snippets .. "/" .. l .. ".json"
+        if not seen_files[file] and vim.fn.filereadable(file) == 1 then
+            seen_files[file] = true
+            local snips = normalize_snippets(MiniSnippets.read_file(file))
+            for _, s in ipairs(snips) do
+                table.insert(res, s)
+            end
+        end
+    end
+    return res
+end
+
+local function global_snippets_loader()
+    local file = config_snippets .. "/global.json"
+    if vim.fn.filereadable(file) == 1 then
+        return normalize_snippets(MiniSnippets.read_file(file))
+    end
+    return {}
+end
+
 MiniSnippets.setup({
     snippets = {
-        -- 1. Language-specific snippets (friendly-snippets + local snippets/<filetype>.json)
+        -- 1. Community friendly-snippets
         MiniSnippets.gen_loader.from_lang(),
-        -- 2. Global shebangs and universal snippets across all filetypes
-        MiniSnippets.gen_loader.from_file(config_snippets .. "/global.json"),
+        -- 2. Custom local snippets from ~/.config/scvim/snippets/<filetype>.json
+        custom_snippets_loader,
+        -- 3. Universal shebangs and global snippets
+        global_snippets_loader,
+    },
+    mappings = {
+        expand = "<C-j>",
     },
     expand = {
         insert = function(snippet)
-            MiniSnippets.default_insert(snippet, { empty_tabstop = "" })
+            MiniSnippets.default_insert(snippet, {
+                empty_tabstop = "",
+                empty_tabstop_final = "",
+            })
         end,
     },
 })
 MiniSnippets.start_lsp_server({ match = false })
 
--- Snippet tabstop navigation
+-- Snippet tabstop navigation & expansion
 local function snippet_jump(direction)
     return function()
         if MiniSnippets.session.get() then
@@ -309,6 +377,9 @@ local function snippet_jump(direction)
     end
 end
 
+vim.keymap.set("i", "<C-j>", function()
+    MiniSnippets.expand()
+end, { desc = "Expand snippet under cursor" })
 vim.keymap.set({ "i", "s" }, "<C-l>", snippet_jump("next"), { desc = "Jump to next snippet tabstop" })
 vim.keymap.set({ "i", "s" }, "<C-h>", snippet_jump("prev"), { desc = "Jump to previous snippet tabstop" })
 

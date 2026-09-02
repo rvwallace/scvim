@@ -305,6 +305,7 @@ Leader key is set to `<Space>`.
 | Keymap      | Mode           | Description                                    |
 | :---------- | :------------- | :--------------------------------------------- |
 | `<C-Space>` | Insert         | Manually trigger two-step completion popup.    |
+| `<C-j>`     | Insert         | Directly expand snippet prefix under cursor.   |
 | `<C-n>`     | Insert         | Next completion item.                          |
 | `<C-p>`     | Insert         | Previous completion item.                      |
 | `<C-l>`     | Insert, Select | Jump to next snippet tabstop.                  |

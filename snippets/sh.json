@@ -1,27 +1,27 @@
 {
   "Bash Script Boilerplate (Toolbox Style)": {
-    "prefix": "script",
+    "prefix": ["script", "sh-script", "bash-script", "boilerplate"],
     "body": [
       "#!/usr/bin/env bash",
       "# shellcheck shell=bash",
       "set -euo pipefail",
       "",
-      "readonly SCRIPT_DIR=\"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")\" && pwd)\"",
-      "readonly PROGNAME=\"$(basename \"$0\")\"",
+      "readonly SCRIPT_DIR=\"\\$(cd \"\\$(dirname \"\\${BASH_SOURCE[0]}\")\" && pwd)\"",
+      "readonly PROGNAME=\"\\$(basename \"\\$0\")\"",
       "",
       "die() {",
-      "    echo \"${PROGNAME}: $*\" >&2",
+      "    echo \"\\${PROGNAME}: \\$*\" >&2",
       "    exit 1",
       "}",
       "",
       "require_command() {",
-      "    command -v \"$1\" >/dev/null 2>&1 || die \"required command not found: $1\"",
+      "    command -v \"\\$1\" >/dev/null 2>&1 || die \"required command not found: \\$1\"",
       "}",
       "",
       "usage() {",
       "    cat <<'USAGE_EOF'",
       "Usage:",
-      "  ${PROGNAME} [options] <arguments>",
+      "  \\${PROGNAME} [options] <arguments>",
       "",
       "Options:",
       "  -h, --help    Show this help message",
@@ -32,7 +32,7 @@
       "    ${0:# your code here}",
       "}",
       "",
-      "main \"$@\""
+      "main \"\\$@\""
     ],
     "description": "Production-grade Bash boilerplate with strict mode, die, require_command, and usage"
   },
@@ -44,7 +44,7 @@
       "",
       "emulate -L zsh",
       "",
-      "if (( $# == 0 )); then",
+      "if (( \\$# == 0 )); then",
       "    echo \"Usage: ${2:func_name} <arguments>\" >&2",
       "    return 1",
       "fi",
@@ -57,7 +57,7 @@
     "prefix": "die",
     "body": [
       "die() {",
-      "    echo \"${1:error}: $*\" >&2",
+      "    echo \"${1:error}: \\$*\" >&2",
       "    exit 1",
       "}"
     ],
@@ -67,7 +67,7 @@
     "prefix": "require-cmd",
     "body": [
       "require_command() {",
-      "    command -v \"$1\" >/dev/null 2>&1 || die \"required command not found: $1\"",
+      "    command -v \"\\$1\" >/dev/null 2>&1 || die \"required command not found: \\$1\"",
       "}"
     ],
     "description": "Ensure required binary exists on PATH"
@@ -75,8 +75,8 @@
   "Safe Temporary File with Trap": {
     "prefix": "tmpfile",
     "body": [
-      "tmp_file=\"$(mktemp \"${TMPDIR:-/tmp}/${1:script}.XXXXXX\")\"",
-      "trap 'rm -f \"${tmp_file:-}\"' EXIT",
+      "tmp_file=\"\\$(mktemp \"\\${TMPDIR:-/tmp}/${1:script}.XXXXXX\")\"",
+      "trap 'rm -f \"\\${tmp_file:-}\"' EXIT",
       "${0}"
     ],
     "description": "Create a temporary file with automatic EXIT cleanup trap"
@@ -84,19 +84,19 @@
   "Argument Parser (while/case)": {
     "prefix": "parse-args",
     "body": [
-      "while [[ $# -gt 0 ]]; do",
-      "    case \"$1\" in",
+      "while [[ \\$# -gt 0 ]]; do",
+      "    case \"\\$1\" in",
       "        -${1:h}|--${2:help})",
       "            usage",
       "            exit 0",
       "            ;;",
       "        -${3:f}|--${4:file})",
-      "            ${5:FILE}=\"$2\"",
+      "            ${5:FILE}=\"\\$2\"",
       "            shift 2",
       "            ;;",
       "        --) shift; break ;;",
       "        *)",
-      "            die \"unknown option: $1\"",
+      "            die \"unknown option: \\$1\"",
       "            ;;",
       "    esac",
       "done",
@@ -107,10 +107,10 @@
   "XDG Base Directory Constants": {
     "prefix": "xdg-dirs",
     "body": [
-      "readonly CONFIG_DIR=\"${XDG_CONFIG_HOME:-${HOME}/.config}/${1:app}\"",
-      "readonly DATA_DIR=\"${XDG_DATA_HOME:-${HOME}/.local/share}/${1:app}\"",
-      "readonly STATE_DIR=\"${XDG_STATE_HOME:-${HOME}/.local/state}/${1:app}\"",
-      "readonly CACHE_DIR=\"${XDG_CACHE_HOME:-${HOME}/.cache}/${1:app}\""
+      "readonly CONFIG_DIR=\"\\${XDG_CONFIG_HOME:-\\${HOME}/.config}/${1:app}\"",
+      "readonly DATA_DIR=\"\\${XDG_DATA_HOME:-\\${HOME}/.local/share}/${1:app}\"",
+      "readonly STATE_DIR=\"\\${XDG_STATE_HOME:-\\${HOME}/.local/state}/${1:app}\"",
+      "readonly CACHE_DIR=\"\\${XDG_CACHE_HOME:-\\${HOME}/.cache}/${1:app}\""
     ],
     "description": "XDG base directory specification constants with fallbacks"
   },
