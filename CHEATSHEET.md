@@ -105,6 +105,7 @@ Leader key is set to `<Space>`.
 | `<leader>td` | Normal | Toggle inline LSP diagnostics.                    |
 | `<leader>ts` | Normal | Toggle spell check highlighting.                  |
 | `<leader>tm` | Normal | Toggle Markdown preview rendering.                |
+| `<leader>tg` | Normal | Toggle Git diff gutter signs (`mini.diff`).       |
 
 ## Insert Information (`<leader>i`)
 

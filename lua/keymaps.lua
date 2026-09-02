@@ -204,6 +204,13 @@ end, { desc = "Toggle spell check" })
 
 vim.keymap.set("n", "<leader>tm", "<cmd>RenderMarkdown toggle<cr>", { desc = "Toggle markdown render" })
 vim.keymap.set("n", "<leader>tc", "<cmd>CsvViewToggle<cr>",          { desc = "Toggle CSV table view" })
+vim.keymap.set("n", "<leader>tg", function()
+    local ok, diff = pcall(require, "mini.diff")
+    if ok then
+        diff.toggle()
+        vim.notify("Toggled git diff gutter signs")
+    end
+end, { desc = "Toggle Git diff signs" })
 
 -- ── Floating & Split Terminals ────────────────────────────────────────────
 local float_term = { buf = nil, win = nil }

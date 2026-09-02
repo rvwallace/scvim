@@ -4,7 +4,7 @@ vim.g.netrw_banner = 0
 -- ── Line Numbers & Gutter ──────────────────────────────────────────────────
 vim.opt.nu = true              -- Show line numbers
 vim.opt.relativenumber = true  -- Relative line numbers for easier jump distance calculation
-vim.opt.signcolumn = "yes"     -- Always draw sign column to prevent layout shifts
+vim.opt.signcolumn = "yes:2"   -- 2-column sign gutter (displays Git signs and LSP diagnostics side-by-side)
 vim.opt.colorcolumn = "0"      -- Column guide (disabled by default)
 
 -- ── Indentation & Tabs ────────────────────────────────────────────────────

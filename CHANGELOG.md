@@ -35,6 +35,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added full LSP navigation keymaps (`gD` for declaration, `gi` for implementation, `gr` for references via `mini.extra` picker).
 - Configured snippet tabstop navigation (`<C-l>` next, `<C-h>` prev) in `mini.snippets` and manual completion popup trigger (`<C-Space>`) in `mini.completion`.
 - Safely guarded experimental Neovim `UI2` initialization in `init.lua`.
+- Set `signcolumn = "yes:2"` in `options.lua` to cleanly display Git gutter signs and LSP diagnostic indicators side-by-side without layout shifts.
+- Added Git diff signs toggle keymap (`<leader>tg`) under quick toggles.
 
 ### 2026-08-31
 
