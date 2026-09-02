@@ -1,5 +1,7 @@
--- Experimental Neovim UI2 internal feature
-require("vim._core.ui2").enable({})
+-- Experimental Neovim UI2 internal feature (safely guarded)
+pcall(function()
+    require("vim._core.ui2").enable({})
+end)
 
 -- ── Core Modules ──────────────────────────────────────────────────────────
 require("options")   -- Editor settings and buffer options

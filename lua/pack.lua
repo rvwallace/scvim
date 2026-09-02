@@ -267,6 +267,9 @@ vim.keymap.set("n", "<leader>hb", function() MiniGit.show_at_cursor() end, { des
 -- ── 13. Autocompletion & Snippets ─────────────────────────────────────────
 local MiniCompletion = require("mini.completion")
 MiniCompletion.setup({
+    mappings = {
+        force_twostep = "<C-Space>", -- Manually trigger completion popup
+    },
     lsp_completion = {
         auto_setup = true,
         process_items = function(items, base)
@@ -289,6 +292,19 @@ MiniSnippets.setup({
     },
 })
 MiniSnippets.start_lsp_server({ match = false })
+
+-- Snippet tabstop navigation
+local function snippet_jump(direction)
+    return function()
+        if MiniSnippets.session.get() then
+            MiniSnippets.session.jump(direction)
+            return true
+        end
+    end
+end
+
+vim.keymap.set({ "i", "s" }, "<C-l>", snippet_jump("next"), { desc = "Jump to next snippet tabstop" })
+vim.keymap.set({ "i", "s" }, "<C-h>", snippet_jump("prev"), { desc = "Jump to previous snippet tabstop" })
 
 -- ── 14. Syntax & LSP Loaders ──────────────────────────────────────────────
 require("treesitter")

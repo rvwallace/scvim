@@ -32,6 +32,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added buffer-local Markdown actions under `<leader>l`: task checkbox toggling (`<leader>lx`), preview toggle (`<leader>lp`), bullet lists (`<leader>lb`), and heading level setters (`<leader>l1`–`<leader>l6`).
 - Updated `mini.clue` leader descriptions for `+code`, `+git`, `+language/local`, and `+split/substitute`.
 - Added MIT `LICENSE` and added Acknowledgements & Inspirations section in `README.md`.
+- Added full LSP navigation keymaps (`gD` for declaration, `gi` for implementation, `gr` for references via `mini.extra` picker).
+- Configured snippet tabstop navigation (`<C-l>` next, `<C-h>` prev) in `mini.snippets` and manual completion popup trigger (`<C-Space>`) in `mini.completion`.
+- Safely guarded experimental Neovim `UI2` initialization in `init.lua`.
 
 ### 2026-08-31
 

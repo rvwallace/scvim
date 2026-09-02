@@ -270,6 +270,9 @@ Leader key is set to `<Space>`.
 | Keymap        | Mode           | Description                                                                  |
 | :------------ | :------------- | :--------------------------------------------------------------------------- |
 | `gd`          | Normal         | Jump to symbol definition.                                                   |
+| `gD`          | Normal         | Jump to symbol declaration.                                                  |
+| `gi`          | Normal         | Jump to symbol implementation.                                               |
+| `gr`          | Normal         | Search symbol references (`mini.extra` picker).                              |
 | `K`           | Normal         | Show hover documentation (native LSP with rounded border).                   |
 | `<leader>cr`  | Normal         | Rename symbol across workspace.                                              |
 | `<leader>ca`  | Normal         | Open code actions menu.                                                      |
@@ -277,6 +280,16 @@ Leader key is set to `<Space>`.
 | `<leader>cw`  | Normal         | Trim trailing whitespace in active buffer.                                   |
 | `<leader>f`   | Normal, Visual | Format active buffer or visual selection (`conform.nvim` with LSP fallback). |
 | `[d` / `]d`   | Normal         | Jump to previous / next diagnostic.                                          |
+
+## Autocompletion and Snippets (`mini.completion` & `mini.snippets`)
+
+| Keymap      | Mode           | Description                                    |
+| :---------- | :------------- | :--------------------------------------------- |
+| `<C-Space>` | Insert         | Manually trigger two-step completion popup.    |
+| `<C-n>`     | Insert         | Next completion item.                          |
+| `<C-p>`     | Insert         | Previous completion item.                      |
+| `<C-l>`     | Insert, Select | Jump to next snippet tabstop.                  |
+| `<C-h>`     | Insert, Select | Jump to previous snippet tabstop.              |
 
 ## CSV Table Navigation (`csvview.nvim`)
 
