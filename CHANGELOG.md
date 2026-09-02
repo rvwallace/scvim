@@ -31,6 +31,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added buffer-local Go actions under `<leader>l`: run package (`<leader>lr` via `go run .`), run all tests (`<leader>lt` via `go test ./...`), run package tests (`<leader>lT`), module tidy (`<leader>lm`), generate (`<leader>lg`), and vet (`<leader>lv`).
 - Added buffer-local Markdown actions under `<leader>l`: task checkbox toggling (`<leader>lx`), preview toggle (`<leader>lp`), bullet lists (`<leader>lb`), and heading level setters (`<leader>l1`–`<leader>l6`).
 - Updated `mini.clue` leader descriptions for `+code`, `+git`, `+language/local`, and `+split/substitute`.
+- Added MIT `LICENSE` and added Acknowledgements & Inspirations section in `README.md`.
 
 ### 2026-08-31
 

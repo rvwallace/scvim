@@ -125,3 +125,21 @@ Access documentation directly in Neovim using `<leader>h`:
 | `<leader>hr` | [README.md](./README.md)         | Project guide and installation instructions. |
 | `<leader>hl` | [CHANGELOG.md](./CHANGELOG.md)   | Complete version release history.            |
 | `<leader>hk` | [LANGUAGES.md](./LANGUAGES.md)   | 15-language LSP and parser matrix.           |
+
+---
+
+## Acknowledgements & Inspirations
+
+`scvim` builds upon patterns, workflows, and ideas from the Neovim community:
+
+- **[Sin-cy/nvim-scratch](https://github.com/Sin-cy/nvim-scratch)**: Initial architectural layout and native `vim.pack` + `mini.nvim` foundation.
+- **[Sin-cy/dotfiles](https://github.com/Sin-cy/dotfiles)**: Keymap ergonomics, editor behaviors, and dynamic language workflows.
+- **[SylvanFranklin/.config](https://github.com/SylvanFranklin/.config)**: Package management concepts (`:PackClean`) and CSV table integration ideas.
+- **[radleylewis/nvim-lite](https://github.com/radleylewis/nvim-lite)**: Cursor position restoration, clean terminal management, and floating scratchpad design.
+- **[echasnovski/mini.nvim](https://github.com/nvim-mini/mini.nvim)**: Comprehensive modular library powering core editing, diffing, and navigation.
+
+---
+
+## License
+
+This project is licensed under the [MIT License](./LICENSE).
