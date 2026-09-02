@@ -209,6 +209,58 @@ autocmd("FileType", {
     end,
 })
 
+-- ── Shell / Bash / Zsh Language Actions (<leader>l in Shell) ───────────────
+autocmd("FileType", {
+    desc = "Setup Shell buffer settings and dynamic <leader>l actions",
+    pattern = { "sh", "bash", "zsh" },
+    callback = function(args)
+        local buf = args.buf
+        vim.opt_local.tabstop = 2
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.expandtab = true
+
+        local map = function(mode, lhs, rhs, desc)
+            vim.keymap.set(mode, lhs, rhs, { buffer = buf, desc = desc })
+        end
+
+        -- Run current script in terminal split
+        map("n", "<leader>lr", function()
+            local file = vim.fn.expand("%")
+            local ft = vim.bo[buf].filetype
+            local shell_cmd = (ft == "zsh") and "zsh " or "bash "
+            run_in_term(shell_cmd .. vim.fn.fnameescape(file))
+        end, "Run script in terminal")
+
+        -- Make executable and execute
+        map("n", "<leader>lx", function()
+            local file = vim.fn.expand("%")
+            vim.cmd("silent! write")
+            vim.fn.system({ "chmod", "+x", file })
+            run_in_term("./" .. vim.fn.fnameescape(file))
+        end, "Make executable and run (chmod +x && ./% )")
+
+        -- Quick syntax check (bash -n / zsh -n)
+        map("n", "<leader>lc", function()
+            local file = vim.fn.expand("%")
+            vim.cmd("silent! write")
+            local ft = vim.bo[buf].filetype
+            local checker = (ft == "zsh") and "zsh" or "bash"
+            local out = vim.fn.system({ checker, "-n", file })
+            if vim.v.shell_error == 0 then
+                vim.notify("✓ " .. file .. ": Syntax OK (" .. checker .. " -n)", vim.log.levels.INFO)
+            else
+                vim.notify("✗ Syntax error:\n" .. out, vim.log.levels.ERROR)
+            end
+        end, "Syntax check (dry run)")
+
+        -- ShellCheck analysis
+        map("n", "<leader>ls", function()
+            local file = vim.fn.expand("%")
+            run_in_term("shellcheck " .. vim.fn.fnameescape(file))
+        end, "Run ShellCheck analysis")
+    end,
+})
+
 -- ── Markdown Language Actions (<leader>l in Markdown) ──────────────────────
 local function toggle_markdown_task(line)
     if line:match("^%s*[%-%*%+]%s+%[%s%]") then

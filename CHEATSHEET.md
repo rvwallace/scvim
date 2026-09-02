@@ -91,6 +91,15 @@ Leader key is set to `<Space>`.
 | `<leader>lt` | Normal | Run test suite via `swift test` in terminal split.              |
 | `<leader>lp` | Normal | Resolve package dependencies via `swift package resolve`.       |
 
+### Shell / Bash / Zsh (`FileType sh, bash, zsh`)
+
+| Keymap       | Mode   | Description                                                     |
+| :----------- | :----- | :-------------------------------------------------------------- |
+| `<leader>lr` | Normal | Run active script in terminal split (`bash %` or `zsh %`).      |
+| `<leader>lx` | Normal | Make executable and run immediately (`chmod +x && ./%`).       |
+| `<leader>lc` | Normal | Dry-run syntax check (`bash -n` / `zsh -n`) with feedback.      |
+| `<leader>ls` | Normal | Run ShellCheck static analysis (`shellcheck %`).                |
+
 ### Markdown (`FileType markdown`)
 
 | Keymap                     | Mode           | Description                                       |

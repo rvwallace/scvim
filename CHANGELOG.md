@@ -38,6 +38,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Set `signcolumn = "yes:2"` in `options.lua` to cleanly display Git gutter signs and LSP diagnostic indicators side-by-side without layout shifts.
 - Added Git diff signs toggle keymap (`<leader>tg`) under quick toggles.
 - Added comprehensive Swift language support: `sourcekit` LSP integration (via macOS Xcode / CLI Tools), Tree-sitter parser, `conform.nvim` formatting (`swiftformat` / `swift_format` with LSP fallback), 4-space indentation, and buffer-local dynamic actions under `<leader>l` (`swift run`, `swift build`, `swift test`, `swift package resolve`).
+- Added Shell/Bash/Zsh buffer-local dynamic actions under `<leader>l`: run script (`<leader>lr`), make executable and run (`<leader>lx`), syntax dry-run check (`<leader>lc`), and ShellCheck analysis (`<leader>ls`), alongside `shfmt` formatting in `conform.nvim` for `sh`, `bash`, and `zsh`.
 
 ### 2026-08-31
 
