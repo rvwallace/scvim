@@ -23,6 +23,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 #### Fixed
 - Replaced deprecated `vim.fn.termopen` with `vim.fn.jobstart(..., { term = true })` in floating terminal function (`lua/keymaps.lua`).
 - Silenced `lua_ls` duplicate field warning on `vim.lsp.util.open_floating_preview` override via diagnostic annotation (`lua/lsp.lua`).
+- Guarded `TermClose` buffer deletion with validity check and `pcall` to prevent invalid buffer errors upon terminal exit (`lua/autocmds.lua`).
 
 ### 2026-09-01
 

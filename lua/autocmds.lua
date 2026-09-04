@@ -364,8 +364,8 @@ autocmd("TermOpen", {
 autocmd("TermClose", {
     desc = "Auto-close terminal buffer on successful process exit",
     callback = function(args)
-        if vim.v.event.status == 0 then
-            vim.api.nvim_buf_delete(args.buf, { force = false })
+        if vim.v.event.status == 0 and vim.api.nvim_buf_is_valid(args.buf) then
+            pcall(vim.api.nvim_buf_delete, args.buf, { force = true })
         end
     end,
 })
