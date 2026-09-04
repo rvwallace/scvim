@@ -160,6 +160,8 @@ Leader key is set to `<Space>`.
 | `.`                | Visual | Repeat last normal mode edit across every selected line.      |
 | `J`                | Visual | Move selected lines down.                                     |
 | `K`                | Visual | Move selected lines up.                                       |
+| `<M-j>` / `<M-k>`  | Normal, Visual | Move line or selection down / up (`mini.move`).               |
+| `<M-h>` / `<M-l>`  | Normal, Visual | Shift line or selection left / right (`mini.move`).              |
 | `<`                | Visual | Unindent selection and keep visual mode.                      |
 | `>`                | Visual | Indent selection and keep visual mode.                        |
 | `<C-^>` or `<C-6>` | Normal | Toggle between active buffer and alternate (previous) buffer. |
@@ -183,6 +185,9 @@ Leader key is set to `<Space>`.
 
 | Keymap | Mode | Description |
 | :--- | :--- | :--- |
+| `<C-h>` / `<C-j>` / `<C-k>` / `<C-l>` | Normal | Directly focus left / down / up / right split window. |
+| `<C-Up>` / `<C-Down>` | Normal | Increase / decrease split window height (`:resize ±2`). |
+| `<C-Left>` / `<C-Right>` | Normal | Decrease / increase split window width (`:vertical resize ±2`). |
 | `<C-w>v` | Normal | Open vertical split window. |
 | `<C-w>s` | Normal | Open horizontal split window. |
 | `<C-w>o` | Normal | Maximize active split and close all other windows (`:only`). |
@@ -295,6 +300,7 @@ Leader key is set to `<Space>`.
 | `K`           | Normal         | Show hover documentation (native LSP with rounded border).                   |
 | `<leader>cr`  | Normal         | Rename symbol across workspace.                                              |
 | `<leader>ca`  | Normal         | Open code actions menu.                                                      |
+| `<leader>co`  | Normal         | Organize imports (`source.organizeImports`).                                 |
 | `<leader>cd`  | Normal         | Show line diagnostics floating window.                                       |
 | `<leader>cw`  | Normal         | Trim trailing whitespace in active buffer.                                   |
 | `<leader>f`   | Normal, Visual | Format active buffer or visual selection (`conform.nvim` with LSP fallback). |

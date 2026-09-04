@@ -16,8 +16,22 @@ end, { desc = "Search references" })
 vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover documentation" })
 vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Rename symbol" })
 vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code action" })
+vim.keymap.set("n", "<leader>co", function()
+    vim.lsp.buf.code_action({
+        context = { only = { "source.organizeImports" }, diagnostics = {} },
+        apply = true,
+    })
+end, { desc = "Organize imports" })
 
 vim.diagnostic.config({
+    signs = {
+        text = {
+            [vim.diagnostic.severity.ERROR] = " ",
+            [vim.diagnostic.severity.WARN]  = " ",
+            [vim.diagnostic.severity.INFO]  = " ",
+            [vim.diagnostic.severity.HINT]  = " ",
+        },
+    },
     virtual_text = { prefix = "●", spacing = 4 },
     underline = true,        -- Underline problematic code
     update_in_insert = false, -- Avoid recalculating while typing
@@ -46,11 +60,15 @@ capabilities = vim.tbl_deep_extend("force", capabilities, require("mini.completi
 vim.lsp.config("*", { capabilities = capabilities })
 
 -- ── 4. Server-Specific Configurations ─────────────────────────────────────
--- Lua Language Server: recognize the global `vim` object
+-- Lua Language Server: recognize global `vim` object and Neovim runtime APIs
 vim.lsp.config("lua_ls", {
     settings = {
         Lua = {
             diagnostics = { globals = { "vim" } },
+            workspace = {
+                checkThirdParty = false,
+                library = { vim.env.VIMRUNTIME .. "/lua" },
+            },
         },
     },
 })

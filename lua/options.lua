@@ -23,7 +23,10 @@ vim.opt.laststatus = 3         -- Global statusline across all splits
 vim.opt.ignorecase = true      -- Case-insensitive search by default
 vim.opt.smartcase = true       -- Case-sensitive if query contains capital letters
 vim.opt.inccommand = "split"   -- Show live substitution preview in a split window
-vim.opt.diffopt:append("linematch:60") -- Smarter diff display aligning modified lines
+vim.opt.diffopt:append("algorithm:patience") -- Cleaner semantic diff algorithm
+vim.opt.diffopt:append("linematch:60")       -- Smarter diff display aligning modified lines
+vim.opt.grepprg = "rg --vimgrep"             -- Use ripgrep for built-in :grep
+vim.opt.grepformat = "%f:%l:%c:%m"
 
 -- ── Backup, Swap & Persistent Undo ────────────────────────────────────────
 vim.opt.swapfile = false       -- Disable swapfiles
@@ -34,6 +37,12 @@ vim.opt.undodir = vim.fn.stdpath("data") .. "/undodir"
 -- ── Completion & Messages ─────────────────────────────────────────────────
 vim.opt.completeopt = "menuone,noselect,fuzzy,nosort" -- Modern fuzzy completion behavior
 vim.opt.shortmess:append("c")                         -- Don't show extra completion messages
+vim.opt.wildignorecase = true                         -- Case-insensitive tab completion in commands
+
+-- ── Folding ───────────────────────────────────────────────────────────────
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.opt.foldlevel = 99                  -- Keep all folds open by default
 
 -- ── Editor Behavior & Quality of Life ─────────────────────────────────────
 vim.opt.clipboard:append("unnamedplus") -- Sync with system clipboard
@@ -44,3 +53,4 @@ vim.opt.wrap = true                     -- Wrap long lines visually
 vim.opt.termguicolors = true            -- Enable 24-bit RGB true colors
 vim.opt.guicursor = ""                  -- Keep terminal default cursor shape
 vim.opt.isfname:append("@-@")           -- Include '@' in filename path matching
+vim.opt.path:append("**")               -- Search subdirectories recursively with gf

@@ -6,6 +6,20 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### 2026-09-03
+
+#### Added
+- Enabled `mini.move` module for sliding single lines or multi-line visual selections in all four directions (`<M-h>`, `<M-j>`, `<M-k>`, `<M-l>`).
+- Added direct split window navigation keymaps (`<C-h>`, `<C-j>`, `<C-k>`, `<C-l>`) and directional split resizing keymaps (`<C-Up>`, `<C-Down>`, `<C-Left>`, `<C-Right>`).
+- Added LSP organize imports keymap (`<leader>co`) triggering `source.organizeImports` across supported language servers.
+- Configured distinct Nerd Font diagnostic icons (`signs.text`) for Error (` `), Warn (` `), Info (` `), and Hint (` `) in the sign gutter.
+- Enhanced `lua_ls` LSP configuration with `workspace.library` pointing to `$VIMRUNTIME/lua` for full Neovim API autocompletion and documentation.
+- Configured `diffopt:append("algorithm:patience")` for semantic, human-readable diff hunk generation.
+- Configured native ripgrep settings (`grepprg` and `grepformat`) for `:grep` workflows.
+- Enabled recursive downward path resolution (`path:append("**")`) for `gf` file jumping, and `wildignorecase` for case-insensitive command-line completion.
+- Added native Treesitter expression folding (`foldmethod = "expr"`, `foldexpr = "v:lua.vim.treesitter.foldexpr()"`, `foldlevel = 99`).
+- Updated `CHEATSHEET.md` and updated `README.md` Acknowledgements with inspirations from `radleylewis/nvim`.
+
 ### 2026-09-01
 
 #### Added

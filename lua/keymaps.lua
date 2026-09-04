@@ -21,6 +21,18 @@ vim.keymap.set("n", "<leader>sz", function() require("mini.misc").zoom() end, { 
 vim.keymap.set("n", "<leader>sm", function() require("mini.misc").zoom() end, { desc = "Toggle window zoom/maximize" })
 vim.keymap.set("n", "<leader>sx", "<cmd>close<cr>", { desc = "Close current split window" })
 
+-- Direct split window navigation
+vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Focus left window" })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Focus lower window" })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Focus upper window" })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Focus right window" })
+
+-- Split window resizing
+vim.keymap.set("n", "<C-Up>", "<cmd>resize +2<cr>", { desc = "Increase window height" })
+vim.keymap.set("n", "<C-Down>", "<cmd>resize -2<cr>", { desc = "Decrease window height" })
+vim.keymap.set("n", "<C-Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease window width" })
+vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase window width" })
+
 -- ── Comment Line Insertion ────────────────────────────────────────────────
 local function insert_comment(mode)
     local cs = vim.bo.commentstring

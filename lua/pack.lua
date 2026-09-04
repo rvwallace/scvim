@@ -147,6 +147,7 @@ require("mini.pairs").setup()
 require("mini.surround").setup()
 require("mini.splitjoin").setup()
 require("mini.comment").setup()
+require("mini.move").setup()
 require("mini.misc").setup()
 
 local mini_trailspace = require("mini.trailspace")

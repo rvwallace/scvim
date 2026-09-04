@@ -135,7 +135,7 @@ Access documentation directly in Neovim using `<leader>h`:
 - **[Sin-cy/nvim-scratch](https://github.com/Sin-cy/nvim-scratch)**: Initial architectural layout and native `vim.pack` + `mini.nvim` foundation.
 - **[Sin-cy/dotfiles](https://github.com/Sin-cy/dotfiles)**: Keymap ergonomics, editor behaviors, and dynamic language workflows.
 - **[SylvanFranklin/.config](https://github.com/SylvanFranklin/.config)**: Package management concepts (`:PackClean`) and CSV table integration ideas.
-- **[radleylewis/nvim-lite](https://github.com/radleylewis/nvim-lite)**: Cursor position restoration, clean terminal management, and floating scratchpad design.
+- **[radleylewis/nvim](https://github.com/radleylewis/nvim)** (and [nvim-lite](https://github.com/radleylewis/nvim-lite)): Split navigation and resizing ergonomics, patience diffing, diagnostic sign styling, import organization workflow, cursor position restoration, clean terminal management, and runtime workspace indexing.
 - **[echasnovski/mini.nvim](https://github.com/nvim-mini/mini.nvim)**: Comprehensive modular library powering core editing, diffing, and navigation.
 
 ---
