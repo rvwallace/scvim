@@ -20,6 +20,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added native Treesitter expression folding (`foldmethod = "expr"`, `foldexpr = "v:lua.vim.treesitter.foldexpr()"`, `foldlevel = 99`).
 - Updated `CHEATSHEET.md` and updated `README.md` Acknowledgements with inspirations from `radleylewis/nvim`.
 
+#### Fixed
+- Replaced deprecated `vim.fn.termopen` with `vim.fn.jobstart(..., { term = true })` in floating terminal function (`lua/keymaps.lua`).
+- Silenced `lua_ls` duplicate field warning on `vim.lsp.util.open_floating_preview` override via diagnostic annotation (`lua/lsp.lua`).
+
 ### 2026-09-01
 
 #### Added

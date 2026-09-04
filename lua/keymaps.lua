@@ -255,7 +255,7 @@ local function toggle_floating_terminal()
     })
 
     if vim.bo[float_term.buf].buftype ~= "terminal" then
-        vim.fn.termopen(os.getenv("SHELL") or "zsh")
+        vim.fn.jobstart(os.getenv("SHELL") or "zsh", { term = true })
     end
 
     vim.cmd("startinsert")

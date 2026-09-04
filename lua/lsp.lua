@@ -47,6 +47,8 @@ vim.diagnostic.config({
 -- Rounded borders for all LSP floating previews (hover, signature help, etc.)
 do
     local orig = vim.lsp.util.open_floating_preview
+    -- Suppress duplicate warning when intentionally wrapping Neovim core function
+    ---@diagnostic disable-next-line: duplicate-set-field
     function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
         opts = opts or {}
         opts.border = opts.border or "rounded"
