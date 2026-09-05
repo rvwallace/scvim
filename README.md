@@ -114,11 +114,14 @@ Use these custom commands in Neovim:
 
 | Command              | Description                                   |
 | :------------------- | :-------------------------------------------- |
-| `:PackAdd <url>`     | Add a plugin to the active session.           |
-| `:PackUpdate`        | Update all installed plugins.                 |
-| `:PackUpdate <name>` | Update a specific plugin.                     |
-| `:PackClean`         | Remove unused and inactive plugins from disk. |
-| `:PackDel <name>`    | Delete a specific plugin from disk.           |
+| `:SCPackAdd <url>`     | Add a plugin to the active session.           |
+| `:SCPackUpdate`        | Update all installed plugins.                 |
+| `:SCPackUpdate <name>` | Update a specific plugin.                     |
+| `:SCPackClean`         | Remove unused and inactive plugins from disk. |
+| `:SCPackDel <name>`    | Delete a specific plugin from disk.           |
+
+Add `!` to `SCPackAdd`, `SCPackUpdate`, or `SCPackDel` to skip confirmation or
+force the operation. Add `!` to `SCPackClean` to skip its confirmation prompt.
 
 For a fresh installation, use `:SCInstallAll` to install all configured
 Mason-managed tools and Tree-sitter parsers. Use `:SCMasonInstallAll` or
@@ -146,7 +149,7 @@ Access documentation directly in Neovim using `<leader>h`:
 
 - **[Sin-cy/nvim-scratch](https://github.com/Sin-cy/nvim-scratch)**: Initial architectural layout and native `vim.pack` + `mini.nvim` foundation.
 - **[Sin-cy/dotfiles](https://github.com/Sin-cy/dotfiles)**: Keymap ergonomics, editor behaviors, and dynamic language workflows.
-- **[SylvanFranklin/.config](https://github.com/SylvanFranklin/.config)**: Package management concepts (`:PackClean`) and CSV table integration ideas.
+- **[SylvanFranklin/.config](https://github.com/SylvanFranklin/.config)**: Package management concepts (`:SCPackClean`) and CSV table integration ideas.
 - **[radleylewis/nvim](https://github.com/radleylewis/nvim)** (and [nvim-lite](https://github.com/radleylewis/nvim-lite)): Split navigation and resizing ergonomics, patience diffing, diagnostic sign styling, import organization workflow, cursor position restoration, clean terminal management, and runtime workspace indexing.
 - **[echasnovski/mini.nvim](https://github.com/nvim-mini/mini.nvim)**: Comprehensive modular library powering core editing, diffing, and navigation.
 

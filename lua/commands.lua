@@ -1,17 +1,17 @@
 -- ── Package Management (vim.pack wrapper commands) ─────────────────────────
 
 -- Add plugins to the current active session
-vim.api.nvim_create_user_command("PackAdd", function(opts)
-    vim.pack.add(opts.fargs)
-end, { nargs = "+", desc = "Add plugins to active session (:PackAdd <url>)" })
+vim.api.nvim_create_user_command("SCPackAdd", function(opts)
+    vim.pack.add(opts.fargs, { confirm = not opts.bang })
+end, { nargs = "+", bang = true, desc = "Add plugins to active session (:SCPackAdd <url>)" })
 
 -- Delete plugins from disk. Remove from pack.lua and restart before running this.
-vim.api.nvim_create_user_command("PackDel", function(opts)
-    vim.pack.del(opts.fargs)
-end, { nargs = "+", desc = "Delete plugins (:PackDel <plugin1> <plugin2>)" })
+vim.api.nvim_create_user_command("SCPackDel", function(opts)
+    vim.pack.del(opts.fargs, { force = opts.bang })
+end, { nargs = "+", bang = true, desc = "Delete plugins (:SCPackDel <plugin1> <plugin2>)" })
 
 -- Clean up and remove inactive/orphaned plugins from disk
-vim.api.nvim_create_user_command("PackClean", function()
+vim.api.nvim_create_user_command("SCPackClean", function(opts)
     local active_plugins = {}
     local unused_plugins = {}
 
@@ -30,22 +30,22 @@ vim.api.nvim_create_user_command("PackClean", function()
         return
     end
 
-    local choice = vim.fn.confirm("Remove unused plugins (" .. table.concat(unused_plugins, ", ") .. ")?", "&Yes\n&No", 2)
+    local choice = opts.bang and 1 or vim.fn.confirm("Remove unused plugins (" .. table.concat(unused_plugins, ", ") .. ")?", "&Yes\n&No", 2)
     if choice == 1 then
-        vim.pack.del(unused_plugins)
+        vim.pack.del(unused_plugins, { force = opts.bang })
         vim.notify("Removed unused plugins: " .. table.concat(unused_plugins, ", "), vim.log.levels.INFO)
     end
-end, { desc = "Remove unused plugins from disk" })
+end, { bang = true, desc = "Remove unused plugins from disk" })
 
 -- Update all installed plugins or specific named plugins
-vim.api.nvim_create_user_command("PackUpdate", function(opts)
+vim.api.nvim_create_user_command("SCPackUpdate", function(opts)
     if opts.args:match("%S") then
         local plugins = vim.split(opts.args, "%s+", { trimempty = true })
-        vim.pack.update(plugins)
+        vim.pack.update(plugins, { force = opts.bang })
     else
-        vim.pack.update()
+        vim.pack.update(nil, { force = opts.bang })
     end
-end, { nargs = "*", desc = "Update all plugins or specific ones" })
+end, { nargs = "*", bang = true, desc = "Update all plugins or specific ones" })
 
 -- Install all configured Mason-managed LSP servers and formatters.
 local function install_mason_packages(on_complete)

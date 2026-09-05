@@ -31,6 +31,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added a single language support registry in `lua/languages.lua` and fresh-machine installation commands: `:SCMasonInstallAll`, `:SCTreesitterInstallAll`, and `:SCInstallAll`.
 - Updated the setup documentation for the SC installation commands and corrected the supported-language count.
 
+#### Changed
+- Renamed the plugin management commands to the `SCPack*` namespace and added bang controls for confirmation and force behavior.
+
 ### 2026-09-01
 
 #### Added
@@ -88,7 +91,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added LSP configurations for 15 languages with Mason package manager support.
 - Configured `yamlls` with `b0o/SchemaStore.nvim` for automatic JSON and YAML schema validation.
 - Added Tree-sitter parsers for core languages, documentation formats, and web tools.
-- Added `:PackAdd`, `:PackDel`, `:PackClean`, and `:PackUpdate` user commands in `lua/commands.lua`.
+- Added the plugin management commands that are now named `:SCPackAdd`, `:SCPackDel`, `:SCPackClean`, and `:SCPackUpdate` in `lua/commands.lua`.
 - Added dedicated `lua/autocmds.lua` for event triggers:
   - Automatic buffer reload on disk change (`FocusGained`, `BufEnter`).
   - Indentation overrides for YAML, Terraform, and Go.
