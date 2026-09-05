@@ -14,18 +14,23 @@ Leader key is set to `<Space>`.
 | `<C-c>`      | Insert                 | Exit insert mode.                          |
 | `<Esc><Esc>` | Terminal               | Exit terminal mode.                        |
 
-## Splits and Substitution (`<leader>s`)
+## Windows (`<leader>w`)
 
 | Keymap       | Mode   | Description                                            |
 | :----------- | :----- | :----------------------------------------------------- |
-| `<leader>ss` | Normal | Substitute word under cursor globally.                 |
-| `<leader>sv` | Normal | Split active window vertically (`<C-w>v`).             |
-| `<leader>sh` | Normal | Split active window horizontally (`<C-w>s`).           |
-| `<leader>se` | Normal | Equalize size of all open split windows (`<C-w>=`).    |
-| `<leader>s=` | Normal | Equalize size of all open split windows (`<C-w>=`).    |
-| `<leader>sz` | Normal | Toggle zoom/maximize active split (`mini.misc`).       |
-| `<leader>sm` | Normal | Toggle zoom/maximize active split (`mini.misc`).       |
-| `<leader>sx` | Normal | Close current split window (`:close`).                 |
+| `<leader>wv` | Normal | Split active window vertically (`<C-w>v`).             |
+| `<leader>wh` | Normal | Split active window horizontally (`<C-w>s`).           |
+| `<leader>we` | Normal | Equalize size of all open split windows (`<C-w>=`).    |
+| `<leader>wz` | Normal | Toggle zoom/maximize active split (`mini.misc`).      |
+| `<leader>wx` | Normal | Close current split window (`:close`).                |
+
+## Search and Replace (`<leader>s`)
+
+| Keymap       | Mode   | Description                                  |
+| :----------- | :----- | :------------------------------------------- |
+| `<leader>sf` | Normal | Search the word under the cursor forward (`*`). |
+| `<leader>sb` | Normal | Search the word under the cursor backward (`#`). |
+| `<leader>ss` | Normal | Substitute the word under the cursor globally.  |
 
 ## Quit and Session (`<leader>q`)
 
@@ -117,21 +122,26 @@ Leader key is set to `<Space>`.
 | `<leader>lb`               | Normal         | Toggle bullet list item (`- `).                   |
 | `<leader>l1`–`<leader>l6`  | Normal         | Toggle / set heading levels (`# ` through `###### `). |
 
-## Quick Toggles and Terminal (`<leader>t`)
+## Options and Toggles (`<leader>o`)
 
 | Keymap       | Mode   | Description                                       |
 | :----------- | :----- | :------------------------------------------------ |
-| `<leader>tf` | Normal | Toggle floating terminal scratchpad.              |
-| `<leader>tt` | Normal | Open bottom terminal split (12 lines high).       |
-| `<leader>tv` | Normal | Open vertical terminal split on the right.        |
-| `<leader>tc` | Normal | Toggle CSV and TSV table view (`:CsvViewToggle`). |
-| `<leader>tw` | Normal | Toggle word wrap.                                 |
-| `<leader>tr` | Normal | Toggle relative line numbers.                     |
-| `<leader>tn` | Normal | Toggle line numbers.                              |
-| `<leader>td` | Normal | Toggle inline LSP diagnostics.                    |
-| `<leader>ts` | Normal | Toggle spell check highlighting.                  |
-| `<leader>tm` | Normal | Toggle Markdown preview rendering.                |
-| `<leader>tg` | Normal | Toggle Git diff gutter signs (`mini.diff`).       |
+| `<leader>oc` | Normal | Toggle CSV and TSV table view (`:CsvViewToggle`). |
+| `<leader>od` | Normal | Toggle inline LSP diagnostics.                   |
+| `<leader>og` | Normal | Toggle Git diff gutter signs (`mini.diff`).      |
+| `<leader>om` | Normal | Toggle Markdown preview rendering.              |
+| `<leader>on` | Normal | Toggle line numbers.                             |
+| `<leader>or` | Normal | Toggle relative line numbers.                   |
+| `<leader>os` | Normal | Toggle spell check highlighting.                 |
+| `<leader>ow` | Normal | Toggle word wrap.                                |
+
+## Terminals (`<leader>t`)
+
+| Keymap       | Mode   | Description                                |
+| :----------- | :----- | :----------------------------------------- |
+| `<leader>tf` | Normal | Toggle floating terminal scratchpad.       |
+| `<leader>tt` | Normal | Open bottom terminal split.                |
+| `<leader>tv` | Normal | Open vertical terminal split on the right. |
 
 ## Insert Information (`<leader>i`)
 
@@ -251,11 +261,13 @@ Leader key is set to `<Space>`.
 | `<leader>vh` | Normal | Search Neovim help tags.                    |
 | `<leader>xx` | Normal | Search workspace diagnostics.               |
 
-## Text Objects and Editing (`mini.ai` & `mini.pairs`)
+## Text Objects and Editing (`mini.ai`, `mini.pairs` & `treesj`)
 
 | Keymap        | Mode   | Description                                                     |
 | :------------ | :----- | :-------------------------------------------------------------- |
-| `gS`          | Normal | Toggle single-line and multi-line structure (`mini.splitjoin`). |
+| `gS`          | Normal | Toggle a code structure between split and joined forms (`treesj`). |
+| `<leader>cs`  | Normal | Split the code structure under the cursor (`treesj`).             |
+| `<leader>cj`  | Normal | Join the code structure under the cursor (`treesj`).              |
 | `va)` / `vi)` | Visual | Select around / inside parentheses or brackets.                 |
 | `vaf` / `vif` | Visual | Select around / inside function.                                |
 | `vaa` / `via` | Visual | Select around / inside parameter or argument.                   |
@@ -290,9 +302,9 @@ Leader key is set to `<Space>`.
 | :------------------------- | :------ | :----------------------------------------------- |
 | `[h`                       | Normal  | Jump to previous diff hunk.                      |
 | `]h`                       | Normal  | Jump to next diff hunk.                          |
-| `<leader>ghs` / `<leader>hs` | Normal  | Stage git hunk under cursor (operator).          |
-| `<leader>ghp` / `<leader>hp` | Normal  | Toggle inline diff overlay preview.              |
-| `<leader>ghb` / `<leader>gb` | Normal  | Show Git blame and commit details at cursor.     |
+| `<leader>ghs` | Normal  | Stage git hunk under cursor (operator).         |
+| `<leader>ghp` | Normal  | Toggle inline diff overlay preview.             |
+| `<leader>ghb` | Normal  | Show Git blame and commit details at cursor.    |
 | `gh`                       | Normal  | Apply diff hunk under cursor.                    |
 | `gH`                       | Normal  | Reset diff hunk under cursor.                    |
 | `:Git`                     | Command | Run Git command in split window.                 |
@@ -324,6 +336,7 @@ Leader key is set to `<Space>`.
 | `<C-p>`     | Insert         | Previous completion item.                      |
 | `<C-l>`     | Insert, Select | Jump to next snippet tabstop.                  |
 | `<C-h>`     | Insert, Select | Jump to previous snippet tabstop.              |
+| `<Tab>` / `<S-Tab>` | Insert | Move out of surrounding brackets or quotes (`tabout.nvim`). |
 
 *Custom snippets are organized in the [`snippets/`](./snippets/) directory (e.g. `global.json`, `python.json`, `sh.json`).*
 

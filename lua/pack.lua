@@ -1,6 +1,8 @@
 -- ── 1. Plugin Declarations (vim.pack) ─────────────────────────────────────
 vim.pack.add({
     "https://github.com/nvim-mini/mini.nvim",
+    "https://github.com/abecodes/tabout.nvim",
+    "https://github.com/Wansmer/treesj",
     "https://github.com/rafamadriz/friendly-snippets",
     { src = "https://github.com/nvim-treesitter/nvim-treesitter", branch = "main" },
     "https://github.com/neovim/nvim-lspconfig",
@@ -79,16 +81,18 @@ miniclue.setup({
 
         -- Custom descriptions for <Leader> subgroups
         { mode = "n", keys = "<Leader>b", desc = "+buffer" },
-        { mode = "n", keys = "<Leader>c", desc = "+code" },
+        { mode = "n", keys = "<Leader>c", desc = "+code/editing" },
         { mode = "n", keys = "<Leader>g", desc = "+git" },
         { mode = "n", keys = "<Leader>h", desc = "+help/docs" },
         { mode = "n", keys = "<Leader>i", desc = "+insert" },
         { mode = "n", keys = "<Leader>l", desc = "+language/local" },
         { mode = "n", keys = "<Leader>p", desc = "+picker" },
         { mode = "n", keys = "<Leader>q", desc = "+quit/session" },
-        { mode = "n", keys = "<Leader>s", desc = "+split/substitute" },
-        { mode = "n", keys = "<Leader>t", desc = "+toggle/terminal" },
+        { mode = "n", keys = "<Leader>o", desc = "+options/toggles" },
+        { mode = "n", keys = "<Leader>s", desc = "+search/replace" },
+        { mode = "n", keys = "<Leader>t", desc = "+terminal" },
         { mode = "n", keys = "<Leader>v", desc = "+vim/system" },
+        { mode = "n", keys = "<Leader>w", desc = "+window" },
         { mode = "n", keys = "<Leader>y", desc = "+yank" },
     },
     window = {
@@ -145,10 +149,13 @@ require("mini.cmdline").setup()
 -- ── 8. Text Objects & Editing ─────────────────────────────────────────────
 require("mini.pairs").setup()
 require("mini.surround").setup()
-require("mini.splitjoin").setup()
 require("mini.comment").setup()
 require("mini.move").setup()
 require("mini.misc").setup()
+
+require("treesj").setup({
+    use_default_keymaps = false,
+})
 
 local mini_trailspace = require("mini.trailspace")
 mini_trailspace.setup({ only_in_normal_buffers = true })
@@ -263,9 +270,6 @@ vim.keymap.set("n", "[h", function() MiniDiff.goto_hunk("prev") end, { desc = "P
 vim.keymap.set("n", "<leader>ghs", MiniDiff.operator, { desc = "Stage git hunk (operator)" })
 vim.keymap.set("n", "<leader>ghp", function() MiniDiff.toggle_overlay() end, { desc = "Toggle git diff overlay" })
 vim.keymap.set("n", "<leader>ghb", function() MiniGit.show_at_cursor() end, { desc = "Show git blame/commit at cursor" })
-vim.keymap.set("n", "<leader>hs", MiniDiff.operator, { desc = "Stage git hunk (operator)" })
-vim.keymap.set("n", "<leader>hp", function() MiniDiff.toggle_overlay() end, { desc = "Toggle git diff overlay" })
-vim.keymap.set("n", "<leader>hb", function() MiniGit.show_at_cursor() end, { desc = "Show git blame/commit at cursor" })
 
 -- ── 13. Autocompletion & Snippets ─────────────────────────────────────────
 local MiniCompletion = require("mini.completion")
@@ -387,3 +391,15 @@ vim.keymap.set({ "i", "s" }, "<C-h>", snippet_jump("prev"), { desc = "Jump to pr
 -- ── 14. Syntax & LSP Loaders ──────────────────────────────────────────────
 require("treesitter")
 require("lsp")
+
+-- ── 15. Tabout ────────────────────────────────────────────────────────────
+-- Move through closing brackets and quotes with Tab, while leaving completion
+-- and snippet controls available for their existing mappings.
+require("tabout").setup({
+    tabkey = "<Tab>",
+    backwards_tabkey = "<S-Tab>",
+    act_as_tab = true,
+    act_as_shift_tab = false,
+    completion = true,
+    ignore_beginning = true,
+})

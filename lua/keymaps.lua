@@ -10,16 +10,18 @@ vim.keymap.set("n", "<leader>/", "gcc", { remap = true, desc = "Toggle line comm
 vim.keymap.set("v", "<leader>/", "gc",  { remap = true, desc = "Toggle selection comment" })
 vim.keymap.set("n", "<leader>X", "<cmd>!chmod +x %<cr>", { silent = true, desc = "Make file executable" })
 
--- ── Splits & Windows (<leader>s) ──────────────────────────────────────────
+-- ── Windows (<leader>w) ───────────────────────────────────────────────────
+vim.keymap.set("n", "<leader>wv", "<C-w>v", { desc = "Split window vertically" })
+vim.keymap.set("n", "<leader>wh", "<C-w>s", { desc = "Split window horizontally" })
+vim.keymap.set("n", "<leader>we", "<C-w>=", { desc = "Make splits equal size" })
+vim.keymap.set("n", "<leader>wz", function() require("mini.misc").zoom() end, { desc = "Toggle window zoom/maximize" })
+vim.keymap.set("n", "<leader>wx", "<cmd>close<cr>", { desc = "Close current split window" })
+
+-- ── Search & Replace (<leader>s) ──────────────────────────────────────────
+vim.keymap.set("n", "<leader>sf", "*", { desc = "Search word under cursor forward" })
+vim.keymap.set("n", "<leader>sb", "#", { desc = "Search word under cursor backward" })
 vim.keymap.set("n", "<leader>ss", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<left><Left><Left>]],
     { desc = "Substitute word under cursor globally" })
-vim.keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
-vim.keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
-vim.keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
-vim.keymap.set("n", "<leader>s=", "<C-w>=", { desc = "Make splits equal size" })
-vim.keymap.set("n", "<leader>sz", function() require("mini.misc").zoom() end, { desc = "Toggle window zoom/maximize" })
-vim.keymap.set("n", "<leader>sm", function() require("mini.misc").zoom() end, { desc = "Toggle window zoom/maximize" })
-vim.keymap.set("n", "<leader>sx", "<cmd>close<cr>", { desc = "Close current split window" })
 
 -- Direct split window navigation
 vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Focus left window" })
@@ -172,6 +174,8 @@ vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end,  { 
 
 -- ── Code Actions & Editing (<leader>c) ────────────────────────────────────
 vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line diagnostic float" })
+vim.keymap.set("n", "<leader>cs", function() require("treesj").split() end, { desc = "Split code structure" })
+vim.keymap.set("n", "<leader>cj", function() require("treesj").join() end, { desc = "Join code structure" })
 vim.keymap.set("n", "<leader>cw", function()
     local ok, trailspace = pcall(require, "mini.trailspace")
     if ok then
@@ -181,42 +185,44 @@ vim.keymap.set("n", "<leader>cw", function()
     end
 end, { desc = "Trim trailing whitespace" })
 
+vim.keymap.set("n", "gS", function() require("treesj").toggle() end, { desc = "Toggle code structure" })
+
 -- ── Undotree ──────────────────────────────────────────────────────────────
 vim.keymap.set("n", "<leader>u", function()
     vim.cmd.packadd("nvim.undotree")
     require("undotree").open()
 end, { desc = "Toggle Builtin Undotree" })
 
--- ── Quick Toggles (<leader>t) ─────────────────────────────────────────────
-vim.keymap.set("n", "<leader>tw", function()
+-- ── Options & Toggles (<leader>o) ─────────────────────────────────────────
+vim.keymap.set("n", "<leader>ow", function()
     vim.wo.wrap = not vim.wo.wrap
     vim.notify("Wrap: " .. (vim.wo.wrap and "ON" or "OFF"))
 end, { desc = "Toggle word wrap" })
 
-vim.keymap.set("n", "<leader>tr", function()
+vim.keymap.set("n", "<leader>or", function()
     vim.wo.relativenumber = not vim.wo.relativenumber
     vim.notify("Relative number: " .. (vim.wo.relativenumber and "ON" or "OFF"))
 end, { desc = "Toggle relative numbers" })
 
-vim.keymap.set("n", "<leader>tn", function()
+vim.keymap.set("n", "<leader>on", function()
     vim.wo.number = not vim.wo.number
     vim.notify("Line numbers: " .. (vim.wo.number and "ON" or "OFF"))
 end, { desc = "Toggle line numbers" })
 
-vim.keymap.set("n", "<leader>td", function()
+vim.keymap.set("n", "<leader>od", function()
     local enabled = vim.diagnostic.is_enabled()
     vim.diagnostic.enable(not enabled)
     vim.notify("Diagnostics: " .. (not enabled and "ON" or "OFF"))
 end, { desc = "Toggle LSP diagnostics" })
 
-vim.keymap.set("n", "<leader>ts", function()
+vim.keymap.set("n", "<leader>os", function()
     vim.wo.spell = not vim.wo.spell
     vim.notify("Spell check: " .. (vim.wo.spell and "ON" or "OFF"))
 end, { desc = "Toggle spell check" })
 
-vim.keymap.set("n", "<leader>tm", "<cmd>RenderMarkdown toggle<cr>", { desc = "Toggle markdown render" })
-vim.keymap.set("n", "<leader>tc", "<cmd>CsvViewToggle<cr>",          { desc = "Toggle CSV table view" })
-vim.keymap.set("n", "<leader>tg", function()
+vim.keymap.set("n", "<leader>om", "<cmd>RenderMarkdown toggle<cr>", { desc = "Toggle markdown render" })
+vim.keymap.set("n", "<leader>oc", "<cmd>CsvViewToggle<cr>",          { desc = "Toggle CSV table view" })
+vim.keymap.set("n", "<leader>og", function()
     local ok, diff = pcall(require, "mini.diff")
     if ok then
         diff.toggle()

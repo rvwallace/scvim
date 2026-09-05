@@ -6,6 +6,20 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### 2026-09-05
+
+#### Added
+- Added a single language support registry in `lua/languages.lua` and fresh-machine installation commands: `:SCMasonInstallAll`, `:SCTreesitterInstallAll`, and `:SCInstallAll`.
+- Added `tabout.nvim` with `<Tab>` / `<S-Tab>` mappings for moving out of surrounding brackets and quotes.
+- Added TreeSJ for Tree-sitter-aware structural split and join actions with `gS`, `<leader>cs`, and `<leader>cj`.
+- Updated the setup documentation for the SC installation commands and corrected the supported-language count.
+
+#### Changed
+- Renamed the plugin management commands to the `SCPack*` namespace and added bang controls for confirmation and force behavior.
+- Reorganized leader mappings: windows moved to `<leader>w`, terminals to `<leader>t`, options and toggles to `<leader>o`, and search/substitution to `<leader>s`.
+- Added discoverable `<leader>sf` and `<leader>sb` aliases for searching the word under the cursor forward and backward.
+- Removed duplicate Git hunk aliases while keeping the canonical `<leader>gh*` mappings.
+
 ### 2026-09-03
 
 #### Added
@@ -24,15 +38,6 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Replaced deprecated `vim.fn.termopen` with `vim.fn.jobstart(..., { term = true })` in floating terminal function (`lua/keymaps.lua`).
 - Silenced `lua_ls` duplicate field warning on `vim.lsp.util.open_floating_preview` override via diagnostic annotation (`lua/lsp.lua`).
 - Guarded `TermClose` buffer deletion with validity check and `pcall` to prevent invalid buffer errors upon terminal exit (`lua/autocmds.lua`).
-
-### 2026-09-05
-
-#### Added
-- Added a single language support registry in `lua/languages.lua` and fresh-machine installation commands: `:SCMasonInstallAll`, `:SCTreesitterInstallAll`, and `:SCInstallAll`.
-- Updated the setup documentation for the SC installation commands and corrected the supported-language count.
-
-#### Changed
-- Renamed the plugin management commands to the `SCPack*` namespace and added bang controls for confirmation and force behavior.
 
 ### 2026-09-01
 
