@@ -25,6 +25,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Silenced `lua_ls` duplicate field warning on `vim.lsp.util.open_floating_preview` override via diagnostic annotation (`lua/lsp.lua`).
 - Guarded `TermClose` buffer deletion with validity check and `pcall` to prevent invalid buffer errors upon terminal exit (`lua/autocmds.lua`).
 
+### 2026-09-05
+
+#### Added
+- Added a single language support registry in `lua/languages.lua` and fresh-machine installation commands: `:SCMasonInstallAll`, `:SCTreesitterInstallAll`, and `:SCInstallAll`.
+- Updated the setup documentation for the SC installation commands and corrected the supported-language count.
+
 ### 2026-09-01
 
 #### Added

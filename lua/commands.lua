@@ -46,3 +46,72 @@ vim.api.nvim_create_user_command("PackUpdate", function(opts)
         vim.pack.update()
     end
 end, { nargs = "*", desc = "Update all plugins or specific ones" })
+
+-- Install all configured Mason-managed LSP servers and formatters.
+local function install_mason_packages(on_complete)
+    local registry = require("mason-registry")
+    local packages = require("languages").mason_packages()
+    local missing = {}
+    local failures = {}
+
+    registry.refresh(function(success, err)
+        if success == false then
+            vim.notify("Mason registry refresh failed: " .. tostring(err), vim.log.levels.ERROR)
+            return
+        end
+
+        for _, name in ipairs(packages) do
+            if registry.has_package(name) then
+                local package = registry.get_package(name)
+                if not package:is_installed() then
+                    table.insert(missing, package)
+                end
+            else
+                table.insert(failures, name .. " (not in Mason registry)")
+            end
+        end
+
+        if #missing == 0 then
+            if #failures > 0 then
+                vim.notify("Mason skipped: " .. table.concat(failures, ", "), vim.log.levels.WARN)
+            else
+                vim.notify("All configured Mason packages are already installed.", vim.log.levels.INFO)
+            end
+            if on_complete then on_complete() end
+            return
+        end
+
+        local remaining = #missing
+        for _, package in ipairs(missing) do
+            package:install({}, function(success, result)
+                if not success then
+                    table.insert(failures, package.name .. ": " .. tostring(result))
+                end
+                remaining = remaining - 1
+                if remaining == 0 then
+                    if #failures > 0 then
+                        vim.notify("Mason installation finished with errors: " .. table.concat(failures, "; "), vim.log.levels.ERROR)
+                    else
+                        vim.notify("Installed " .. #missing .. " Mason package(s).", vim.log.levels.INFO)
+                    end
+                    if on_complete then on_complete() end
+                end
+            end)
+        end
+    end)
+end
+
+vim.api.nvim_create_user_command("SCMasonInstallAll", function()
+    install_mason_packages()
+end, { desc = "Install configured Mason LSP servers and formatters" })
+
+vim.api.nvim_create_user_command("SCTreesitterInstallAll", function()
+    require("nvim-treesitter").install(require("languages").treesitter_parsers())
+    vim.notify("Requested configured Tree-sitter parsers.", vim.log.levels.INFO)
+end, { desc = "Install configured Tree-sitter parsers" })
+
+vim.api.nvim_create_user_command("SCInstallAll", function()
+    require("nvim-treesitter").install(require("languages").treesitter_parsers())
+    install_mason_packages()
+    vim.notify("Requested configured Mason packages and Tree-sitter parsers.", vim.log.levels.INFO)
+end, { desc = "Install all configured language support" })

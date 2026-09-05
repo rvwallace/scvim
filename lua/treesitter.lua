@@ -1,32 +1,10 @@
 local treesitter = require("nvim-treesitter")
+local languages = require("languages")
 
 -- ── 1. Parsers to Install ─────────────────────────────────────────────────
 -- Parser compilation requires tree-sitter-cli 0.26.1 or later.
 -- Install it with your system package manager (e.g. `brew install tree-sitter-cli`).
-local ensure_installed = {
-    -- Neovim & Internal
-    "lua", "vim", "vimdoc", "query",
-
-    -- Core Programming Languages
-    "bash",
-    "go", "gomod", "gosum", "gowork",
-    "python",
-    "rust",
-    "swift",
-    "terraform",
-    "javascript", "typescript", "tsx",
-    "html", "css",
-
-    -- Config & Documentation Formats
-    "dockerfile",
-    "json", "json5",
-    "markdown", "markdown_inline",
-    "toml",
-    "yaml",
-
-    -- Utilities
-    "http",
-}
+local ensure_installed = languages.treesitter_parsers()
 
 treesitter.install(ensure_installed)
 

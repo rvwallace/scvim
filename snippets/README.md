@@ -1,12 +1,12 @@
 # Snippets Guide & Architecture
 
-`scvim` uses **`mini.snippets`** loaded with **VS Code-compatible JSON snippets**. It merges community snippets from **`friendly-snippets`** with custom user snippets stored directly in this directory.
+`scvim` uses **`mini.snippets`** with **VS Code-compatible JSON snippets**. It combines community snippets from **`friendly-snippets`** with custom snippets in this directory.
 
 ---
 
 ## 📁 File Structure & Language Mapping
 
-Snippet files follow the standard VS Code JSON naming convention matching Neovim's `&filetype`:
+Snippet files use the standard VS Code JSON names that match Neovim's `&filetype`:
 
 | File | Filetypes & Aliases | Example Triggers |
 | :--- | :--- | :--- |
@@ -15,8 +15,6 @@ Snippet files follow the standard VS Code JSON naming convention matching Neovim
 | **`sh.json`** | `sh`, `bash`, `zsh` | `script`, `sh-script`, `zsh-function`, `parse-args`, `tmpfile`, `die` |
 | **`go.json`** | `go` | `cli-subcommands`, `bubbletea`, `ifew` |
 | **`swift.json`** | `swift` | `script`, `shell-cmd` |
-| **`terraform.json`** | `terraform`, `hcl` | `var`, `output`, `backend-s3`, `dynamic` |
-| **`markdown.json`** | `markdown` | `frontmatter`, `callout` |
 
 ---
 
@@ -53,12 +51,12 @@ All snippets in this directory use standard VS Code JSON format:
 
 ---
 
-## ⚙️ How `scvim`'s Custom Loader Works
+## ⚙️ How the `scvim` Custom Loader Works
 
-`scvim` includes a custom loader in `lua/pack.lua` that enhances `mini.snippets` to ensure seamless compatibility with VS Code JSON files:
+`scvim` includes a custom loader in `lua/pack.lua`. The loader makes VS Code JSON snippets work with `mini.snippets`:
 
 1. **Multi-Prefix Flattening**: In VS Code format, `"prefix"` can be an array (`["script", "sh-script"]`). The loader splits array prefixes into individual string entries so every alias matches accurately.
-2. **LSP Multiline Joining**: Converts JSON `body` arrays into newline-joined string blocks required by Neovim's LSP completion engine.
+2. **LSP Multiline Joining**: Converts JSON `body` arrays into newline-joined string blocks for Neovim's LSP completion engine.
 3. **Filetype Alias Resolution**: Automatically resolves language mismatches between Neovim filetypes and Tree-sitter grammars (e.g. `sh` ↔ `bash` ↔ `zsh`, `terraform` ↔ `hcl`).
 4. **Clean Tabstops**: Disables visual placeholder artifacts (`∎` / `•`) so the cursor lands cleanly at each tabstop without corrupting the buffer.
 

@@ -13,7 +13,8 @@ You can run `scvim` side by side with your existing Neovim configuration using `
 - [`./init.lua`](./init.lua): Main entry point. Loads core modules and color scheme.
 - [`./lua/options.lua`](./lua/options.lua): Editor options and buffer settings.
 - [`./lua/keymaps.lua`](./lua/keymaps.lua): Key mappings and leader bindings.
-- [`./lua/commands.lua`](./lua/commands.lua): Custom user commands for package management.
+- [`./lua/commands.lua`](./lua/commands.lua): Custom user commands for package and language management.
+- [`./lua/languages.lua`](./lua/languages.lua): Single source of truth for supported languages and installable tools.
 - [`./lua/autocmds.lua`](./lua/autocmds.lua): Event handlers and filetype rules.
 - [`./lua/pack.lua`](./lua/pack.lua): Plugin declarations and module configurations.
 - [`./lua/lsp.lua`](./lua/lsp.lua): LSP server setups and diagnostics.
@@ -89,15 +90,21 @@ nvim
 
 ---
 
-## Language Server Setup
+## Language and Tool Setup
 
-Install language servers with Mason after initial launch:
+Open Neovim after you install `scvim`, then run:
 
 ```vim
-:MasonInstall ansible-language-server bash-language-server basedpyright css-lsp dockerfile-language-server gopls html-lsp json-lsp marksman ruff rust-analyzer taplo terraform-ls typescript-language-server yaml-language-server
+:SCInstallAll
 ```
 
-Tree-sitter parsers install automatically on first launch via [`lua/treesitter.lua`](./lua/treesitter.lua).
+This command installs the configured Mason tools and Tree-sitter parsers. Use
+`:SCMasonInstallAll` for Mason tools only. Use `:SCTreesitterInstallAll` for
+Tree-sitter parsers only. The commands read their lists from
+[`lua/languages.lua`](./lua/languages.lua).
+
+Tree-sitter also requests the configured parsers when Neovim starts. The
+explicit command is useful on a new machine or after you add a parser.
 
 ---
 
@@ -113,6 +120,11 @@ Use these custom commands in Neovim:
 | `:PackClean`         | Remove unused and inactive plugins from disk. |
 | `:PackDel <name>`    | Delete a specific plugin from disk.           |
 
+For a fresh installation, use `:SCInstallAll` to install all configured
+Mason-managed tools and Tree-sitter parsers. Use `:SCMasonInstallAll` or
+`:SCTreesitterInstallAll` when only one category is needed. These commands
+read their lists from [`lua/languages.lua`](./lua/languages.lua).
+
 ---
 
 ## Documentation
@@ -124,7 +136,7 @@ Access documentation directly in Neovim using `<leader>h`:
 | `<leader>hc` | [CHEATSHEET.md](./CHEATSHEET.md) | Complete keymap and shortcut reference.      |
 | `<leader>hr` | [README.md](./README.md)         | Project guide and installation instructions. |
 | `<leader>hl` | [CHANGELOG.md](./CHANGELOG.md)   | Complete version release history.            |
-| `<leader>hk` | [LANGUAGES.md](./LANGUAGES.md)   | 15-language LSP and parser matrix.           |
+| `<leader>hk` | [LANGUAGES.md](./LANGUAGES.md)   | 16-language LSP and parser matrix.           |
 
 ---
 

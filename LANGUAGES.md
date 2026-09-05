@@ -4,7 +4,7 @@ This document lists supported languages, Tree-sitter parsers, and LSP servers.
 
 ## Supported Languages
 
-| Language | Tree-sitter Parser | LSP Server (`lspconfig`) | Mason Package Name |
+| Language | Tree-sitter Parser | LSP Server | Mason Package Name |
 | :--- | :--- | :--- | :--- |
 | **Ansible** | `yaml` | `ansiblels` | `ansible-language-server` |
 | **Bash** | `bash` | `bashls` | `bash-language-server` |
@@ -47,31 +47,44 @@ sudo pacman -S neovim tree-sitter-cli ripgrep fd gcc
 
 ---
 
-### Step 2: Install Language Servers
+### Step 2: Install Language Support
 
 1. Open Neovim:
 ```sh
 nvim
 ```
 
-2. Run the Mason install command:
+2. Run the `scvim` installation command:
 ```vim
-:MasonInstall ansible-language-server bash-language-server basedpyright css-lsp dockerfile-language-server gopls html-lsp json-lsp marksman ruff rust-analyzer taplo terraform-ls typescript-language-server yaml-language-server
+:SCInstallAll
 ```
 
-3. Mason downloads and installs the server binaries into `~/.local/share/nvim/mason/bin/`.
+This command installs the configured Mason tools and Tree-sitter parsers.
+Mason downloads its packages into `~/.local/share/nvim/mason/bin/`.
+
+For a fresh installation, install all configured language support with:
+
+```vim
+:SCInstallAll
+```
+
+Use `:SCMasonInstallAll` for Mason-managed tools only or
+`:SCTreesitterInstallAll` for parsers only. System-provided tools such as
+SourceKit-LSP, Go, Terraform, and Swift tooling are not installed by Mason.
 
 ---
 
-### Step 3: Install Tree-sitter Parsers
+### Step 3: Install One Category
 
-Tree-sitter parsers install automatically when Neovim starts via [`lua/treesitter.lua`](./lua/treesitter.lua).
-
-To manually update or install parsers, use:
+Use these commands when you need one category:
 
 ```vim
-:lua require("nvim-treesitter").install(require("treesitter").ensure_installed)
+:SCMasonInstallAll
+:SCTreesitterInstallAll
 ```
+
+Tree-sitter also requests the configured parsers when Neovim starts. The
+explicit command is useful after you add a parser.
 
 ---
 

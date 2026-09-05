@@ -46,6 +46,14 @@ Leader key is set to `<Space>`.
 | `<leader>vk` | Normal | Run Neovim health checks (`:checkhealth`).                   |
 | `<leader>vr` | Normal | Restart Neovim session (`:restart`).                         |
 
+## Fresh Installation Commands
+
+| Command | Description |
+| :--- | :--- |
+| `:SCInstallAll` | Install all configured Mason tools and Tree-sitter parsers. |
+| `:SCMasonInstallAll` | Install configured Mason LSP servers and formatters. |
+| `:SCTreesitterInstallAll` | Install configured Tree-sitter parsers. |
+
 ## Help and Documentation (`<leader>h`)
 
 | Keymap       | Mode   | Description                                           |

@@ -189,26 +189,7 @@ vim.lsp.config("terraformls", {
 })
 
 -- ── 5. Server Activation ──────────────────────────────────────────────────
--- Install on new machine with:
--- :MasonInstall ansible-language-server bash-language-server basedpyright css-lsp dockerfile-language-server gopls html-lsp json-lsp marksman ruff rust-analyzer taplo terraform-ls typescript-language-server yaml-language-server
-local servers = {
-    "ansiblels",
-    "bashls",
-    "basedpyright",
-    "cssls",
-    "dockerls",
-    "gopls",
-    "html",
-    "jsonls",
-    "lua_ls",
-    "marksman",
-    "ruff",
-    "rust_analyzer",
-    "sourcekit",
-    "taplo",
-    "ts_ls",
-    "yamlls",
-}
+-- Install configured tools on a new machine with :SCInstallAll.
+local servers = require("languages").lsp_servers()
 
 vim.lsp.enable(servers)
-vim.lsp.enable("terraformls")
