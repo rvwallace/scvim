@@ -43,6 +43,10 @@
     "treesj": {
       "rev": "79aedb401bbdc7e4202f7881eab5f6feb2105b0a",
       "src": "https://github.com/Wansmer/treesj"
+    },
+    "zdiff.nvim": {
+      "rev": "6e2a105d7cc138b25e2907589ad2c5251e608424",
+      "src": "https://github.com/martindur/zdiff.nvim"
     }
   }
 }

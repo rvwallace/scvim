@@ -11,6 +11,7 @@ vim.pack.add({
     "https://github.com/b0o/SchemaStore.nvim",
     "https://github.com/hat0uma/csvview.nvim",
     "https://github.com/stevearc/conform.nvim",
+    "https://github.com/martindur/zdiff.nvim",
 })
 
 -- ── 2. Icons Provider (mini.icons) ────────────────────────────────────────
@@ -527,3 +528,46 @@ require("tabout").setup({
     completion = true,
     ignore_beginning = true,
 })
+
+
+-- ── 16. zdiff ────────────────────────────────────────────────────────────
+-- Git diff viewer inspired by Zed's multi-buffer diff viewer
+require("zdiff").setup({
+    -- Whether files are expanded by default
+    default_expanded = false,
+
+    -- Default branch for toggle_mode (m key)
+    default_branch = "main",
+
+    -- keymap bindings (defaults)
+    keymaps = {
+        goto_file = "<CR>",
+        toggle = "<Tab>",
+        close = "q",
+        refresh = "R",
+        toggle_mode = "m",
+        help = "?",
+        yank_ref = "gy",
+    },
+
+    -- icons for the UI elements
+    icons = {
+        collapsed = "",
+        expanded = "",
+        added = "+",
+        deleted = "-",
+        modified = "~",
+    },
+
+    -- syntax highlighting strategy
+    syntax = {
+        -- "projection" parses old/new full-file snapshots and projects
+        -- captures onto unified diff lines. "hunk" keeps legacy behavior.
+        mode = "projection",
+        -- skip projection when either old/new sources exceed this many lines.
+        -- 0 means unlimited
+        max_lines = 8000,
+    },
+})
+
+vim.keymap.set("n", "<leader>gz", "<cmd>Zdiff<cr>", { desc = "Diff Uncommitted changes (diff vs HEAD)" })

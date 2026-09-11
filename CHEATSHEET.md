@@ -298,18 +298,20 @@ Leader key is set to `<Space>`.
 | `sr` + `{old}` + `{new}`     | Normal | Replace surrounding character.   |
 | `sh` + `{char}`              | Normal | Highlight surrounding character. |
 
-## Git and Diffs (`mini.diff` & `mini.git`)
+## Git and Diffs (`mini.diff`, `mini.git` & `zdiff.nvim`)
 
-| Keymap                     | Mode    | Description                                      |
-| :------------------------- | :------ | :----------------------------------------------- |
-| `[h`                       | Normal  | Jump to previous diff hunk.                      |
-| `]h`                       | Normal  | Jump to next diff hunk.                          |
+| Keymap        | Mode    | Description                                      |
+| :------------ | :------ | :----------------------------------------------- |
+| `[h`          | Normal  | Jump to previous diff hunk.                      |
+| `]h`          | Normal  | Jump to next diff hunk.                          |
 | `<leader>ghs` | Normal  | Stage git hunk under cursor (operator).         |
 | `<leader>ghp` | Normal  | Toggle inline diff overlay preview.             |
 | `<leader>ghb` | Normal  | Show Git blame and commit details at cursor.    |
-| `gh`                       | Normal  | Apply diff hunk under cursor.                    |
-| `gH`                       | Normal  | Reset diff hunk under cursor.                    |
-| `:Git`                     | Command | Run Git command in split window.                 |
+| `<leader>gz`  | Normal  | Open zdiff multi-buffer git diff viewer.        |
+| `gh`          | Normal  | Apply diff hunk under cursor.                    |
+| `gH`          | Normal  | Reset diff hunk under cursor.                    |
+| `:Git`        | Command | Run Git command in split window.                 |
+| `:Zdiff`      | Command | Open multi-buffer diff viewer (optional git ref).|
 
 ## LSP and Code Formatting (`conform.nvim`)
 
