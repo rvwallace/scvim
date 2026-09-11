@@ -332,6 +332,9 @@ autocmd("FileType", {
         -- Preview toggle
         map("n", "<leader>lp", "<cmd>RenderMarkdown toggle<cr>", "Toggle markdown render preview")
 
+        -- Open the current note in Obsidian for native rendering and PDF export
+        map("n", "<leader>lo", "<cmd>ObsidianOpen<cr>", "Open note in Obsidian")
+
         -- Bullets
         map("n", "<leader>lb", function()
             local line = vim.api.nvim_get_current_line()

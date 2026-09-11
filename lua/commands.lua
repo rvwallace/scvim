@@ -115,3 +115,22 @@ vim.api.nvim_create_user_command("SCInstallAll", function()
     install_mason_packages()
     vim.notify("Requested configured Mason packages and Tree-sitter parsers.", vim.log.levels.INFO)
 end, { desc = "Install all configured language support" })
+
+-- Open the current file in the macOS Obsidian application.
+vim.api.nvim_create_user_command("ObsidianOpen", function()
+    if vim.fn.has("mac") ~= 1 then
+        vim.notify("ObsidianOpen is currently supported only on macOS.", vim.log.levels.WARN)
+        return
+    end
+
+    local path = vim.fn.expand("%:p")
+    if path == "" then
+        vim.notify("No file is open in the current buffer.", vim.log.levels.WARN)
+        return
+    end
+
+    local result = vim.system({ "open", "-a", "Obsidian", "--", path }):wait()
+    if result.code ~= 0 then
+        vim.notify("Could not open file in Obsidian:\n" .. (result.stderr or ""), vim.log.levels.ERROR)
+    end
+end, { desc = "Open current file in Obsidian" })

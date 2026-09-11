@@ -19,7 +19,17 @@ require("mini.icons").setup()
 
 -- ── 3. File Explorer (mini.files) ─────────────────────────────────────────
 local MiniFiles = require("mini.files")
+
+local show_dotfiles = false
+local filter_show = function(_) return true end
+local filter_hide = function(entry) return not vim.startswith(entry.name, ".") end
+
 MiniFiles.setup({
+    content = {
+        filter = function(entry)
+            return show_dotfiles and filter_show(entry) or filter_hide(entry)
+        end,
+    },
     mappings = {
         go_in = "<CR>",
         go_in_plus = "L",
@@ -27,6 +37,22 @@ MiniFiles.setup({
         go_out_plus = "H",
     },
 })
+
+local toggle_dotfiles = function()
+    show_dotfiles = not show_dotfiles
+    local new_filter = show_dotfiles and filter_show or filter_hide
+    MiniFiles.refresh({ content = { filter = new_filter } })
+end
+
+vim.api.nvim_create_autocmd("User", {
+    pattern = "MiniFilesBufferCreate",
+    callback = function(args)
+        local buf_id = args.data.buf_id
+        vim.keymap.set("n", "g.", toggle_dotfiles, { buffer = buf_id, desc = "Toggle hidden files" })
+        vim.keymap.set("n", ".", toggle_dotfiles, { buffer = buf_id, desc = "Toggle hidden files" })
+    end,
+})
+
 vim.keymap.set("n", "-", "<cmd>lua MiniFiles.open()<CR>", { desc = "Toggle mini files explorer" })
 vim.keymap.set("n", "<leader>-", function()
     MiniFiles.open(vim.api.nvim_buf_get_name(0), false)
@@ -39,10 +65,108 @@ local MiniExtra = require("mini.extra")
 MiniPick.setup()
 MiniExtra.setup()
 
-vim.keymap.set("n", "<leader>pf", function() MiniPick.builtin.files() end, { desc = "Find files" })
-vim.keymap.set("n", "<leader>pg", function() MiniPick.builtin.grep_live() end, { desc = "Live grep project" })
-vim.keymap.set("n", "<leader>ps", function() MiniPick.builtin.grep({ pattern = vim.fn.expand("<cword>") }) end,
-    { desc = "Grep word under cursor" })
+local function pick_files()
+    local cmd
+    if vim.fn.executable("rg") == 1 then
+        cmd = { "rg", "--files", "--hidden", "--glob", "!.git/*", "--color=never" }
+    elseif vim.fn.executable("fd") == 1 then
+        cmd = { "fd", "--type=f", "--hidden", "--exclude", ".git", "--color=never" }
+    elseif vim.fn.executable("git") == 1 then
+        cmd = { "git", "ls-files", "--cached", "--others", "--exclude-standard" }
+    else
+        return MiniPick.builtin.files({ tool = "fallback" })
+    end
+
+    MiniPick.builtin.cli({ command = cmd }, {
+        source = {
+            name = "Files",
+            show = function(buf_id, items, query)
+                MiniPick.default_show(buf_id, items, query, { show_icons = true })
+            end,
+        },
+    })
+end
+
+local function pick_grep_live()
+    if vim.fn.executable("rg") ~= 1 then
+        if vim.fn.executable("git") == 1 then return MiniPick.builtin.grep_live({ tool = "git" }) end
+        return MiniPick.builtin.grep({ tool = "fallback" })
+    end
+
+    local set_items_opts = { do_match = false }
+    local spawn_opts = { cwd = vim.fn.getcwd() }
+    local sys = { kill = function() end }
+    local match = function(_, _, query)
+        sys:kill()
+        if #query == 0 then
+            sys = { kill = function() end }
+            return MiniPick.set_picker_items({}, set_items_opts)
+        end
+        local case = vim.o.ignorecase and (vim.o.smartcase and "smart-case" or "ignore-case") or "case-sensitive"
+        local cmd = {
+            "rg",
+            "--column",
+            "--line-number",
+            "--no-heading",
+            "--field-match-separator",
+            "\\x00",
+            "--color=never",
+            "--hidden",
+            "--glob",
+            "!.git/*",
+            "--" .. case,
+            "--",
+            table.concat(query),
+        }
+        sys = MiniPick.set_picker_items_from_cli(cmd, { set_items_opts = set_items_opts, spawn_opts = spawn_opts })
+    end
+
+    MiniPick.start({
+        source = {
+            name = "Grep Live",
+            items = {},
+            match = match,
+            show = function(buf_id, items, query)
+                MiniPick.default_show(buf_id, items, query, { show_icons = true })
+            end,
+        },
+    })
+end
+
+local function pick_grep_word()
+    local pattern = vim.fn.expand("<cword>")
+    if pattern == "" then return end
+    if vim.fn.executable("rg") ~= 1 then return MiniPick.builtin.grep({ pattern = pattern }) end
+
+    local case = vim.o.ignorecase and (vim.o.smartcase and "smart-case" or "ignore-case") or "case-sensitive"
+    local cmd = {
+        "rg",
+        "--column",
+        "--line-number",
+        "--no-heading",
+        "--field-match-separator",
+        "\\x00",
+        "--color=never",
+        "--hidden",
+        "--glob",
+        "!.git/*",
+        "--" .. case,
+        "--",
+        pattern,
+    }
+    MiniPick.builtin.cli({ command = cmd }, {
+        source = {
+            name = string.format("Grep (%s)", pattern),
+            show = function(buf_id, items, query)
+                MiniPick.default_show(buf_id, items, query, { show_icons = true })
+            end,
+        },
+    })
+end
+
+vim.keymap.set("n", "<leader>pf", pick_files, { desc = "Find files (including hidden)" })
+vim.keymap.set("n", "<leader>pg", pick_grep_live, { desc = "Live grep project (including hidden)" })
+vim.keymap.set("n", "<leader>ps", pick_grep_word, { desc = "Grep word under cursor (including hidden)" })
 vim.keymap.set("n", "<leader>pb", function() MiniPick.builtin.buffers() end, { desc = "Search open buffers" })
 vim.keymap.set("n", "<leader>pr", function() MiniExtra.pickers.oldfiles() end, { desc = "Search recent files" })
 vim.keymap.set("n", "<leader>pk", function() MiniExtra.pickers.keymaps() end, { desc = "Search keymaps" })

@@ -119,6 +119,7 @@ Leader key is set to `<Space>`.
 | :------------------------- | :------------- | :------------------------------------------------ |
 | `<leader>lx`               | Normal, Visual | Toggle task checkbox (`[ ]` ↔ `[x]`).             |
 | `<leader>lp`               | Normal         | Toggle Markdown preview rendering.                |
+| `<leader>lo`               | Normal         | Open the current note in Obsidian.                |
 | `<leader>lb`               | Normal         | Toggle bullet list item (`- `).                   |
 | `<leader>l1`–`<leader>l6`  | Normal         | Toggle / set heading levels (`# ` through `###### `). |
 
@@ -247,14 +248,15 @@ Leader key is set to `<Space>`.
 | `<leader>-`   | Normal   | Open file explorer at active buffer path. |
 | `<CR>` or `L` | Explorer | Enter directory or open file.             |
 | `_` or `H`    | Explorer | Go up to parent directory.                |
+| `g.` or `.`   | Explorer | Toggle hidden files (dotfiles).           |
 
 ## Pickers and Search (`mini.pick` & `mini.extra`)
 
-| Keymap       | Mode   | Description                                 |
-| :----------- | :----- | :------------------------------------------ |
-| `<leader>pf` | Normal | Find files in workspace.                    |
-| `<leader>pg` | Normal | Run live interactive grep across workspace. |
-| `<leader>ps` | Normal | Search word under cursor with grep.         |
+| Keymap       | Mode   | Description                                          |
+| :----------- | :----- | :--------------------------------------------------- |
+| `<leader>pf` | Normal | Find files in workspace (includes hidden files when supported). |
+| `<leader>pg` | Normal | Search workspace interactively (includes hidden files with ripgrep). |
+| `<leader>ps` | Normal | Search word under cursor (includes hidden files with ripgrep). |
 | `<leader>pb` | Normal | Search open buffers.                        |
 | `<leader>pr` | Normal | Search recently opened files (`oldfiles`).  |
 | `<leader>pk` | Normal | Search active keymaps.                      |
