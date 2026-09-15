@@ -6,6 +6,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### 2026-09-15
+
+#### Added
+- Enhanced `mini.statusline` with repository-wide Git branch detection and fast `.git/HEAD` fallback for unnamed (`[No Name]`), scratch, and directory buffers.
+- Added asynchronous remote tracking to statusline displaying ahead/behind commit indicators (`⇡ahead ⇣behind`) with automatic cache invalidation on focus gain, buffer write, and directory switch.
+- Added detached HEAD commit hash display and in-progress action indicators (`|rebase`, `|merge`, `|bisect`).
+- Added dynamic `mini.diff` summary in statusline (` +add ~change -delete`) that cleanly hides when buffers have no modifications.
+
 ### 2026-09-05
 
 #### Added

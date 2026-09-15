@@ -257,8 +257,185 @@ end, { desc = "Close all buffers" })
 
 -- ── 7. Statusline & UI Components ─────────────────────────────────────────
 local statusline = require("mini.statusline")
+
+-- Git repository stats cache and branch detector
+local repo_stats_cache = {}
+local last_fetch_time = {}
+
+local function get_git_root(buf_id)
+    buf_id = buf_id or 0
+    local summary = vim.b[buf_id].minigit_summary
+    if summary and summary.root and summary.root ~= "" then
+        return summary.root
+    end
+    local buf_name = vim.api.nvim_buf_get_name(buf_id)
+    local start_path = (buf_name ~= "") and vim.fs.dirname(buf_name) or vim.fn.getcwd()
+    return vim.fs.root(start_path, ".git")
+end
+
+local function get_git_dir(root)
+    if not root then return nil end
+    local git_path = root .. "/.git"
+    local stat = vim.uv.fs_stat(git_path)
+    if not stat then return nil end
+    if stat.type == "directory" then
+        return git_path
+    elseif stat.type == "file" then
+        local f = io.open(git_path, "r")
+        if f then
+            local line = f:read("*l") or ""
+            f:close()
+            local dir = line:match("^gitdir:%s*(.+)$")
+            if dir then
+                if not dir:match("^/") then dir = root .. "/" .. dir end
+                return dir
+            end
+        end
+    end
+    return nil
+end
+
+local function get_git_branch(buf_id, root)
+    buf_id = buf_id or 0
+    local summary = vim.b[buf_id].minigit_summary
+    if summary and summary.head_name and summary.head_name ~= "" then
+        local head = summary.head_name == "HEAD" and (summary.head or ""):sub(1, 7) or summary.head_name
+        if summary.in_progress and summary.in_progress ~= "" then
+            head = head .. "|" .. summary.in_progress
+        end
+        return head
+    end
+
+    local git_dir = get_git_dir(root)
+    if not git_dir then return nil end
+    local head_file = git_dir .. "/HEAD"
+    local f = io.open(head_file, "r")
+    if not f then return nil end
+    local line = f:read("*l") or ""
+    f:close()
+    local branch = line:match("^ref:%s*refs/heads/(.+)$")
+    if branch then return branch end
+    if #line >= 7 then return line:sub(1, 7) end
+    return nil
+end
+
+local function update_remote_stats(root)
+    if not root or vim.fn.executable("git") ~= 1 then return end
+    local now = vim.uv.now()
+    if last_fetch_time[root] and (now - last_fetch_time[root] < 5000) then
+        return
+    end
+    last_fetch_time[root] = now
+
+    vim.system(
+        { "git", "rev-list", "--left-right", "--count", "HEAD...@{upstream}" },
+        { text = true, cwd = root },
+        function(res)
+            if res.code == 0 and res.stdout then
+                local ahead, behind = res.stdout:match("(%d+)%s+(%d+)")
+                ahead = tonumber(ahead) or 0
+                behind = tonumber(behind) or 0
+                local str = ""
+                if ahead > 0 and behind > 0 then
+                    str = string.format("⇡%d ⇣%d", ahead, behind)
+                elseif ahead > 0 then
+                    str = string.format("⇡%d", ahead)
+                elseif behind > 0 then
+                    str = string.format("⇣%d", behind)
+                end
+                repo_stats_cache[root] = str
+            else
+                repo_stats_cache[root] = ""
+            end
+            vim.schedule(function()
+                pcall(vim.cmd, "redrawstatus")
+            end)
+        end
+    )
+end
+
+local function git_section(args)
+    args = args or {}
+    local trunc_width = args.trunc_width or 40
+    if MiniStatusline.is_truncated(trunc_width) then return "" end
+
+    local buf = vim.api.nvim_get_current_buf()
+    local root = get_git_root(buf)
+    if not root then return "" end
+
+    local branch = get_git_branch(buf, root)
+    if not branch or branch == "" then return "" end
+
+    update_remote_stats(root)
+    local remote_stats = repo_stats_cache[root] or ""
+
+    local parts = { "", branch }
+    if remote_stats ~= "" and not MiniStatusline.is_truncated(75) then
+        table.insert(parts, remote_stats)
+    end
+    return table.concat(parts, " ")
+end
+
+local function diff_section(args)
+    args = args or {}
+    local trunc_width = args.trunc_width or 75
+    if MiniStatusline.is_truncated(trunc_width) then return "" end
+    local summary = vim.b.minidiff_summary_string or vim.b.gitsigns_status
+    if not summary or summary == "" or summary == "-" then return "" end
+    local icon = args.icon or ""
+    return icon .. " " .. summary
+end
+
+-- Invalidate remote stats cache on window focus, file write, or directory change
+local git_status_group = vim.api.nvim_create_augroup("StatuslineGitRefresh", { clear = true })
+vim.api.nvim_create_autocmd({ "FocusGained", "BufWritePost", "DirChanged" }, {
+    group = git_status_group,
+    callback = function()
+        local buf = vim.api.nvim_get_current_buf()
+        local root = get_git_root(buf)
+        if root then
+            last_fetch_time[root] = nil
+            update_remote_stats(root)
+        end
+    end,
+})
+vim.api.nvim_create_autocmd("User", {
+    group = git_status_group,
+    pattern = "MiniGitUpdated",
+    callback = function()
+        local buf = vim.api.nvim_get_current_buf()
+        local root = get_git_root(buf)
+        if root then
+            last_fetch_time[root] = nil
+        end
+    end,
+})
+
 statusline.setup({
     use_icons = true,
+    content = {
+        active = function()
+            local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
+            local git           = git_section({ trunc_width = 40 })
+            local diff          = diff_section({ trunc_width = 75 })
+            local diagnostics   = MiniStatusline.section_diagnostics({ trunc_width = 75 })
+            local lsp           = MiniStatusline.section_lsp({ trunc_width = 75 })
+            local filename      = MiniStatusline.section_filename({ trunc_width = 140 })
+            local fileinfo      = MiniStatusline.section_fileinfo({ trunc_width = 120 })
+            local location      = MiniStatusline.section_location({ trunc_width = 75 })
+            local search        = MiniStatusline.section_searchcount({ trunc_width = 75 })
+
+            return MiniStatusline.combine_groups({
+                { hl = mode_hl,                  strings = { mode } },
+                { hl = "MiniStatuslineDevinfo",  strings = { git, diff, diagnostics, lsp } },
+                "%<",
+                { hl = "MiniStatuslineFilename", strings = { filename } },
+                "%=",
+                { hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
+                { hl = mode_hl,                  strings = { search, location } },
+            })
+        end,
+    },
 })
 
 require("mini.notify").setup({
@@ -385,6 +562,20 @@ MiniDiff.setup({
         style = "sign",
         signs = { add = "▎", change = "▎", delete = "▎" },
     },
+})
+
+-- Format statusline diff summary cleanly (+add ~change -delete)
+vim.api.nvim_create_autocmd("User", {
+    pattern = "MiniDiffUpdated",
+    callback = function(args)
+        local summary = vim.b[args.buf].minidiff_summary
+        if not summary then return end
+        local t = {}
+        if (summary.add or 0) > 0 then table.insert(t, "+" .. summary.add) end
+        if (summary.change or 0) > 0 then table.insert(t, "~" .. summary.change) end
+        if (summary.delete or 0) > 0 then table.insert(t, "-" .. summary.delete) end
+        vim.b[args.buf].minidiff_summary_string = table.concat(t, " ")
+    end,
 })
 
 local MiniGit = require("mini.git")
