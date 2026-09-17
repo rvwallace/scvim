@@ -41,7 +41,11 @@ autocmd("FileType", {
     desc = "Disable automatic comment continuation on new line",
     pattern = "*",
     callback = function()
-        vim.opt_local.formatoptions:remove({ "c", "r", "o" })
+        if vim.b.scvim_comment_continuation then
+            vim.opt_local.formatoptions:append("cro")
+        else
+            vim.opt_local.formatoptions:remove({ "c", "r", "o" })
+        end
     end,
 })
 

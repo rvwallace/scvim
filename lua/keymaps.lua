@@ -215,6 +215,17 @@ vim.keymap.set("n", "<leader>od", function()
     vim.notify("Diagnostics: " .. (not enabled and "ON" or "OFF"))
 end, { desc = "Toggle LSP diagnostics" })
 
+vim.keymap.set("n", "<leader>ot", function()
+    local enabled = not vim.b.scvim_comment_continuation
+    vim.b.scvim_comment_continuation = enabled
+    if enabled then
+        vim.opt_local.formatoptions:append("cro")
+    else
+        vim.opt_local.formatoptions:remove({ "c", "r", "o" })
+    end
+    vim.notify("Comment continuation: " .. (enabled and "ON" or "OFF"))
+end, { desc = "Toggle comment continuation" })
+
 vim.keymap.set("n", "<leader>os", function()
     vim.wo.spell = not vim.wo.spell
     vim.notify("Spell check: " .. (vim.wo.spell and "ON" or "OFF"))

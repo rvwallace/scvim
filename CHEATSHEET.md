@@ -135,6 +135,7 @@ Leader key is set to `<Space>`.
 | `<leader>on` | Normal | Toggle line numbers.                             |
 | `<leader>or` | Normal | Toggle relative line numbers.                   |
 | `<leader>os` | Normal | Toggle spell check highlighting.                 |
+| `<leader>ot` | Normal | Toggle automatic comment continuation (`c`, `r`, and `o` in `formatoptions`). |
 | `<leader>ow` | Normal | Toggle word wrap.                                |
 
 ## Terminals (`<leader>t`)
