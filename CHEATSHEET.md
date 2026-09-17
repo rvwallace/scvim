@@ -23,6 +23,7 @@ Leader key is set to `<Space>`.
 | `<leader>we` | Normal | Equalize size of all open split windows (`<C-w>=`).    |
 | `<leader>wz` | Normal | Toggle zoom/maximize active split (`mini.misc`).      |
 | `<leader>wx` | Normal | Close current split window (`:close`).                |
+| `<leader>wm` | Normal | Open and focus the buffer overview map (`mini.map`). |
 
 ## Search and Replace (`<leader>s`)
 
@@ -188,8 +189,6 @@ Leader key is set to `<Space>`.
 | `<`                | Visual | Unindent selection and keep visual mode.                      |
 | `>`                | Visual | Indent selection and keep visual mode.                        |
 | `<C-^>` or `<C-6>` | Normal | Toggle between active buffer and alternate (previous) buffer. |
-| `[b` / `]b`        | Normal | Jump to previous / next open buffer.                          |
-| `[d` / `]d`        | Normal | Jump to previous / next diagnostic error/warning.             |
 
 ## Jump History and Context
 
@@ -293,6 +292,44 @@ Leader key is set to `<Space>`.
 | `gcO` | Normal | Insert comment line above cursor. |
 | `gcA` | Normal | Insert comment at end of current line. |
 
+## Alignment (`mini.align`)
+
+Select text and press `ga` to align, or `gA` to align with a live preview. Normal-mode mappings also accept a motion. Press `=` for assignments or `|` for table columns; in preview mode, press Enter to accept or Esc to cancel.
+
+## Bracket Navigation (`mini.bracketed`)
+
+Use `[` for previous and `]` for next. Capitalize the suffix for first / last (for example, `[Q` / `]Q`). Counts are supported.
+
+| Suffix | Target |
+| :----- | :----- |
+| `b` | Listed buffer |
+| `c` | Comment block |
+| `x` | Merge conflict marker |
+| `d` | Diagnostic |
+| `f` | File on disk |
+| `i` | Indentation change |
+| `j` | Jump within current buffer |
+| `l` | Location-list entry |
+| `o` | Old file |
+| `q` | Quickfix entry |
+| `t` | Tree-sitter node / parent |
+| `w` | Window |
+| `y` | Yank history over the put region |
+
+Undo-history navigation is disabled; `u` and Ctrl-R retain their normal behavior. Git hunks still use `[h` / `]h`. Bracketed uses `[c` / `]c` for comments, replacing Vim's native diff-change motions.
+
+## Buffer Overview (`mini.map`)
+
+The map starts closed and shows search matches, diagnostics, and Git diff hunks when opened.
+
+| Keymap | Action |
+| :----- | :----- |
+| `<leader>ov` | Toggle the overview map. |
+| `<leader>wm` | Open and focus the map. |
+| `j` / `k` in map | Browse the source buffer. |
+| Enter in map | Return to the source at the explored position. |
+| Esc in map | Return to the original source position. |
+
 ## Surround Motions (`mini.surround`)
 
 | Keymap                       | Mode   | Description                      |
@@ -332,7 +369,6 @@ Leader key is set to `<Space>`.
 | `<leader>cd`  | Normal         | Show line diagnostics floating window.                                       |
 | `<leader>cw`  | Normal         | Trim trailing whitespace in active buffer.                                   |
 | `<leader>f`   | Normal, Visual | Format active buffer or visual selection (`conform.nvim` with LSP fallback). |
-| `[d` / `]d`   | Normal         | Jump to previous / next diagnostic.                                          |
 
 ## Autocompletion and Snippets (`mini.completion` & `mini.snippets`)
 

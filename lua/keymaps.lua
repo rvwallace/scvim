@@ -16,6 +16,11 @@ vim.keymap.set("n", "<leader>wh", "<C-w>s", { desc = "Split window horizontally"
 vim.keymap.set("n", "<leader>we", "<C-w>=", { desc = "Make splits equal size" })
 vim.keymap.set("n", "<leader>wz", function() require("mini.misc").zoom() end, { desc = "Toggle window zoom/maximize" })
 vim.keymap.set("n", "<leader>wx", "<cmd>close<cr>", { desc = "Close current split window" })
+vim.keymap.set("n", "<leader>wm", function()
+    local map = require("mini.map")
+    map.open()
+    map.toggle_focus()
+end, { desc = "Focus buffer map" })
 
 -- ── Search & Replace (<leader>s) ──────────────────────────────────────────
 vim.keymap.set("n", "<leader>sf", "*", { desc = "Search word under cursor forward" })
@@ -166,12 +171,6 @@ vim.keymap.set("n", "<leader>iu", function()
     insert_text(uuid)
 end, { desc = "Insert random UUID v4" })
 
--- ── Buffer & Diagnostic Navigation ─────────────────────────────────────────
-vim.keymap.set("n", "[b", "<cmd>bprevious<cr>", { desc = "Previous buffer" })
-vim.keymap.set("n", "]b", "<cmd>bnext<cr>",     { desc = "Next buffer" })
-vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, { desc = "Previous diagnostic" })
-vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end,  { desc = "Next diagnostic" })
-
 -- ── Code Actions & Editing (<leader>c) ────────────────────────────────────
 vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line diagnostic float" })
 vim.keymap.set("n", "<leader>cs", function() require("treesj").split() end, { desc = "Split code structure" })
@@ -194,6 +193,7 @@ vim.keymap.set("n", "<leader>u", function()
 end, { desc = "Toggle Builtin Undotree" })
 
 -- ── Options & Toggles (<leader>o) ─────────────────────────────────────────
+vim.keymap.set("n", "<leader>ov", function() require("mini.map").toggle() end, { desc = "Toggle buffer overview map" })
 vim.keymap.set("n", "<leader>ow", function()
     vim.wo.wrap = not vim.wo.wrap
     vim.notify("Wrap: " .. (vim.wo.wrap and "ON" or "OFF"))

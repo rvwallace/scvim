@@ -348,7 +348,7 @@ local function update_remote_stats(root)
                 repo_stats_cache[root] = ""
             end
             vim.schedule(function()
-                pcall(vim.cmd, "redrawstatus")
+                pcall(function() vim.cmd.redrawstatus() end)
             end)
         end
     )
@@ -357,7 +357,7 @@ end
 local function git_section(args)
     args = args or {}
     local trunc_width = args.trunc_width or 40
-    if MiniStatusline.is_truncated(trunc_width) then return "" end
+    if statusline.is_truncated(trunc_width) then return "" end
 
     local buf = vim.api.nvim_get_current_buf()
     local root = get_git_root(buf)
@@ -370,7 +370,7 @@ local function git_section(args)
     local remote_stats = repo_stats_cache[root] or ""
 
     local parts = { "", branch }
-    if remote_stats ~= "" and not MiniStatusline.is_truncated(75) then
+    if remote_stats ~= "" and not statusline.is_truncated(75) then
         table.insert(parts, remote_stats)
     end
     return table.concat(parts, " ")
@@ -379,7 +379,7 @@ end
 local function diff_section(args)
     args = args or {}
     local trunc_width = args.trunc_width or 75
-    if MiniStatusline.is_truncated(trunc_width) then return "" end
+    if statusline.is_truncated(trunc_width) then return "" end
     local summary = vim.b.minidiff_summary_string or vim.b.gitsigns_status
     if not summary or summary == "" or summary == "-" then return "" end
     local icon = args.icon or ""
@@ -415,17 +415,17 @@ statusline.setup({
     use_icons = true,
     content = {
         active = function()
-            local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
+            local mode, mode_hl = statusline.section_mode({ trunc_width = 120 })
             local git           = git_section({ trunc_width = 40 })
             local diff          = diff_section({ trunc_width = 75 })
-            local diagnostics   = MiniStatusline.section_diagnostics({ trunc_width = 75 })
-            local lsp           = MiniStatusline.section_lsp({ trunc_width = 75 })
-            local filename      = MiniStatusline.section_filename({ trunc_width = 140 })
-            local fileinfo      = MiniStatusline.section_fileinfo({ trunc_width = 120 })
-            local location      = MiniStatusline.section_location({ trunc_width = 75 })
-            local search        = MiniStatusline.section_searchcount({ trunc_width = 75 })
+            local diagnostics   = statusline.section_diagnostics({ trunc_width = 75 })
+            local lsp           = statusline.section_lsp({ trunc_width = 75 })
+            local filename      = statusline.section_filename({ trunc_width = 140 })
+            local fileinfo      = statusline.section_fileinfo({ trunc_width = 120 })
+            local location      = statusline.section_location({ trunc_width = 75 })
+            local search        = statusline.section_searchcount({ trunc_width = 75 })
 
-            return MiniStatusline.combine_groups({
+            return statusline.combine_groups({
                 { hl = mode_hl,                  strings = { mode } },
                 { hl = "MiniStatuslineDevinfo",  strings = { git, diff, diagnostics, lsp } },
                 "%<",
@@ -453,6 +453,19 @@ require("mini.pairs").setup()
 require("mini.surround").setup()
 require("mini.jump").setup()
 require("mini.jump2d").setup()
+require("mini.align").setup()
+require("mini.bracketed").setup({
+    undo = { suffix = "" },
+})
+
+local MiniMap = require("mini.map")
+MiniMap.setup({
+    integrations = {
+        MiniMap.gen_integration.builtin_search(),
+        MiniMap.gen_integration.diagnostic(),
+        MiniMap.gen_integration.diff(),
+    },
+})
 require("mini.comment").setup()
 require("mini.move").setup()
 require("mini.misc").setup()

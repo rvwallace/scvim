@@ -9,8 +9,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### 2026-09-16
 
 #### Added
+- Enabled `mini.align` with `ga` / `gA` for interactive text alignment.
+- Enabled `mini.bracketed` for consistent previous/next and first/last navigation, replacing duplicate buffer and diagnostic mappings; undo tracking remains disabled.
+- Added an optional `mini.map` overview with search, diagnostic, and diff highlights: `<leader>ov` toggles it and `<leader>wm` opens and focuses it.
 - Enabled `mini.jump` for cross-line `f`, `F`, `t`, and `T` motions, target highlighting, and repeat jumps.
 - Enabled `mini.jump2d` on `<Enter>` for labeled jumps across visible text and windows.
+
+#### Fixed
+- Fixed Lua diagnostics in the statusline configuration by using its local module reference and wrapping the protected redraw call in a function.
 
 ### 2026-09-15
 
