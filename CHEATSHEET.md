@@ -175,6 +175,10 @@ Leader key is set to `<Space>`.
 | `<C-u>`            | Normal | Scroll up half page and center cursor (`zz`).                 |
 | `n`                | Normal | Jump to next search match and center cursor.                  |
 | `N`                | Normal | Jump to previous search match and center cursor.              |
+| `<Enter>`          | Normal, Visual, Operator-pending | Show `mini.jump2d` labels across visible windows; type the target label to jump. Local mappings in explorers and CSV views take precedence. |
+| `f` / `F` + `{char}` | Normal, Visual, Operator-pending | Find character forward / backward across lines (`mini.jump`). |
+| `t` / `T` + `{char}` | Normal, Visual, Operator-pending | Jump just before / after character across lines (`mini.jump`). |
+| `;`                | Normal, Visual, Operator-pending | Repeat the last character jump. While jumping, `f` / `F` / `t` / `T` also repeat without another character. |
 | `J`                | Normal | Join lines and preserve cursor position.                      |
 | `.`                | Visual | Repeat last normal mode edit across every selected line.      |
 | `J`                | Visual | Move selected lines down.                                     |

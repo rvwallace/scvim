@@ -6,6 +6,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### 2026-09-16
+
+#### Added
+- Enabled `mini.jump` for cross-line `f`, `F`, `t`, and `T` motions, target highlighting, and repeat jumps.
+- Enabled `mini.jump2d` on `<Enter>` for labeled jumps across visible text and windows.
+
 ### 2026-09-15
 
 #### Added
