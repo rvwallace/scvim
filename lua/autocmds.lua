@@ -265,6 +265,33 @@ autocmd("FileType", {
     end,
 })
 
+-- ── Nushell Language Actions (<leader>l in Nushell) ───────────────────────
+autocmd("FileType", {
+    desc = "Setup Nushell buffer settings and dynamic <leader>l actions",
+    pattern = "nu",
+    callback = function(args)
+        local buf = args.buf
+        vim.opt_local.tabstop = 4
+        vim.opt_local.shiftwidth = 4
+        vim.opt_local.expandtab = true
+
+        local map = function(mode, lhs, rhs, desc)
+            vim.keymap.set(mode, lhs, rhs, { buffer = buf, desc = desc })
+        end
+
+        map("n", "<leader>lr", function()
+            local file = vim.fn.expand("%")
+            run_in_term("nu " .. vim.fn.fnameescape(file))
+        end, "Run Nushell script in terminal")
+
+        map("n", "<leader>lc", function()
+            local file = vim.fn.expand("%")
+            vim.cmd("silent! write")
+            run_in_term("nu --ide-check 100 " .. vim.fn.fnameescape(file))
+        end, "Check Nushell script")
+    end,
+})
+
 -- ── Markdown Language Actions (<leader>l in Markdown) ──────────────────────
 local function toggle_markdown_task(line)
     if line:match("^%s*[%-%*%+]%s+%[%s%]") then

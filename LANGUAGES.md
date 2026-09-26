@@ -15,6 +15,7 @@ This document lists supported languages, Tree-sitter parsers, and LSP servers.
 | **JSON** | `json`, `json5` | `jsonls` | `json-lsp` |
 | **Lua** | `lua`, `vim`, `vimdoc`, `query` | `lua_ls` | System or Mason `lua-language-server` |
 | **Markdown** | `markdown`, `markdown_inline` | `marksman` | `marksman` |
+| **Nushell** | `nu` | Built into Nushell (`nu --lsp`) | System Nushell |
 | **Python** | `python` | `basedpyright`, `ruff` | `basedpyright`, `ruff` |
 | **Rust** | `rust` | `rust_analyzer` | `rust-analyzer` |
 | **Swift** | `swift` | `sourcekit` | System (`sourcekit-lsp` via Xcode / CLI Tools) |
@@ -34,6 +35,13 @@ Install runtime tools using your system package manager:
 #### macOS (Homebrew)
 ```sh
 brew install neovim tree-sitter-cli ripgrep fd
+```
+
+For Nushell development, also install Nushell and the optional formatter:
+
+```sh
+brew install nushell
+cargo install --git https://github.com/nushell/nufmt
 ```
 
 #### Linux (Debian / Ubuntu / Fedora / Arch)
@@ -61,6 +69,10 @@ nvim
 
 This command installs the configured Mason tools and Tree-sitter parsers.
 Mason downloads its packages into `~/.local/share/nvim/mason/bin/`.
+
+Nushell is an exception: its LSP is provided by the `nu --lsp` command, and
+`nufmt` is an external formatter managed outside Mason. Install both separately
+if you want diagnostics and formatting for `.nu` files.
 
 For a fresh installation, install all configured language support with:
 
@@ -93,4 +105,5 @@ explicit command is useful after you add a parser.
 - **Capabilities**: Completion capabilities connect automatically to `mini.completion` in [`lua/lsp.lua`](./lua/lsp.lua).
 - **YAML & SchemaStore**: `yamlls` uses `b0o/SchemaStore.nvim` to automatically validate and autocomplete Kubernetes manifests, GitHub Actions workflows, Docker Compose, and ~600 other formats.
 - **Python**: `basedpyright` provides hover and type information. `ruff` provides linting and code actions. The hover provider in `ruff` is disabled to prevent duplicate popups.
-- **Formatting**: `<leader>f` formats the active buffer or selection using `conform.nvim` with dedicated formatters (`prettier` for Markdown/JSON/YAML, `stylua` for Lua, `shfmt` for Shell, `ruff` for Python) and automatic fallback to active LSP.
+- **Formatting**: `<leader>f` formats the active buffer or selection using `conform.nvim` with dedicated formatters (`prettier` for Markdown/JSON/YAML, `stylua` for Lua, `shfmt` for Shell, `nufmt` for Nushell, `ruff` for Python) and automatic fallback to active LSP.
+- **Nushell**: `.nu` files use Nushell's built-in `nu --lsp` server. `<leader>lr` runs the current script and `<leader>lc` runs Nushell's IDE diagnostic check.

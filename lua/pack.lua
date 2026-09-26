@@ -555,6 +555,7 @@ conform.setup({
         json             = { "prettier" },
         jsonc            = { "prettier" },
         markdown         = { "prettier" },
+        nu               = { "nufmt" },
         html             = { "prettier" },
         css              = { "prettier" },
         javascript       = { "prettier" },

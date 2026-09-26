@@ -6,6 +6,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### 2026-09-26
+
+#### Added
+- Added Nushell support for `.nu` files: the `nu` Tree-sitter parser, Nushell's built-in `nu --lsp` server, `nufmt` formatting through Conform, and `<leader>lr` / `<leader>lc` run and diagnostic actions.
+- Documented Nushell's system-managed LSP and external `nufmt` installation requirements.
+
 ### 2026-09-17
 
 #### Added

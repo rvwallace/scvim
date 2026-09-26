@@ -11,6 +11,7 @@ M.languages = {
     { name = "json", parsers = { "json", "json5" }, lsp = "jsonls", mason = "json-lsp" },
     { name = "lua", parsers = { "lua", "vim", "vimdoc", "query" }, lsp = "lua_ls", mason = "lua-language-server" },
     { name = "markdown", parsers = { "markdown", "markdown_inline" }, lsp = "marksman", mason = "marksman" },
+    { name = "nushell", parsers = { "nu" }, lsp = "nushell" },
     { name = "python", parsers = { "python" }, lsp = { "basedpyright", "ruff" }, mason = { "basedpyright", "ruff" } },
     { name = "rust", parsers = { "rust" }, lsp = "rust_analyzer", mason = "rust-analyzer" },
     { name = "swift", parsers = { "swift" }, lsp = "sourcekit", system = "sourcekit-lsp" },

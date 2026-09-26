@@ -188,6 +188,17 @@ vim.lsp.config("terraformls", {
     },
 })
 
+-- Nushell ships its own LSP implementation; Mason does not manage it.
+vim.lsp.config("nushell", {
+    cmd = { "nu", "--lsp" },
+    filetypes = { "nu" },
+    root_dir = function(bufnr, on_dir)
+        local root = vim.fs.root(bufnr, { ".git" })
+            or vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr))
+        on_dir(root)
+    end,
+})
+
 -- ── 5. Server Activation ──────────────────────────────────────────────────
 -- Install configured tools on a new machine with :SCInstallAll.
 local servers = require("languages").lsp_servers()

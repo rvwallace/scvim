@@ -114,6 +114,14 @@ Leader key is set to `<Space>`.
 | `<leader>lc` | Normal | Dry-run syntax check (`bash -n` / `zsh -n`) with feedback.      |
 | `<leader>ls` | Normal | Run ShellCheck static analysis (`shellcheck %`).                |
 
+### Nushell (`FileType nu`)
+
+| Keymap       | Mode           | Description                                                  |
+| :----------- | :------------- | :----------------------------------------------------------- |
+| `<leader>lr` | Normal         | Run the active script in a terminal split (`nu %`).          |
+| `<leader>lc` | Normal         | Run Nushell's IDE diagnostic check (`nu --ide-check 100 %`). |
+| `<leader>f`  | Normal, Visual | Format with `nufmt` when installed.                         |
+
 ### Markdown (`FileType markdown`)
 
 | Keymap                     | Mode           | Description                                       |
